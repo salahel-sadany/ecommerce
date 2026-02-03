@@ -1,1 +1,159 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  [role='list'] {
+    list-style: none;
+  }
+
+  body {
+    min-block-size: 100vh;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  button,
+  input,
+  label {
+    line-height: 1.1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  img,
+  picture {
+    max-inline-size: 100%;
+    display: block;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer base {
+  :root {
+    --clr-white: oklch(100% 0.00011 271.152);
+    --clr-black: oklch(0% 0 0);
+
+    --clr-blue-500: oklch(48.704% 0.16717 256.148);
+
+    --clr-gray-400: oklch(0.446 0.03 256.802);
+    --clr-gray-500: oklch(39.773% 0.01246 267.233);
+    --clr-gray-800: oklch(22.277% 0.00793 274.569);
+    --clr-gray-900: oklch(0.21 0.034 264.665);
+
+    --clr-green-500: oklch(0.627 0.194 149.214);
+
+    --clr-yellow-500: oklch(0.852 0.199 91.936);
+
+    --clr-red-500: oklch(50.6% 0.19265 27.689);
+
+    --ff-body: 'Inter', sans-serif;
+    --ff-heading: 'Inter', sans-serif;
+
+    --fs-300: 0.875rem;
+    --fs-400: 1rem;
+    --fs-500: 1.125rem;
+    --fs-600: 1.25rem;
+    --fs-700: 1.5rem;
+    --fs-800: 2rem;
+    --fs-900: 3.75rem;
+    --fs-1000: 3.75rem;
+
+    @media (width > 760px) {
+      --fs-300: 0.875rem;
+      --fs-400: 1rem;
+      --fs-500: 1.25rem;
+      --fs-600: 1.5rem;
+      --fs-700: 2rem;
+      --fs-800: 3rem;
+      --fs-900: 5rem;
+      --fs-1000: 7.5rem;
+    }
+  }
+
+  :root {
+    --text-main: var(--clr-gray-400);
+    --text-high-contrast: var(--clr-white);
+    --text-dark: var(--clr-gray-800);
+    --text-extra-dark: var(--clr-gray-900);
+    --text-accent: var(var(--clr-blue-500));
+
+    --background-accent-light: var(--clr-gray-400);
+    --background-accent-main: var(--clr-gray-500);
+    --background-accent-dark: var(--clr-gray-900);
+
+    /* --background-extra-light: var(--clr-brown-500);
+    --background-light: var(--clr-brown-600); */
+    --background-main: var(--clr-blue-500);
+    /* --background-dark: var(--clr-brown-800);
+    --background-extra-dark: var(--clr-brown-900); */
+
+    --font-size-heading-sm: var(--fs-700);
+    --font-size-heading-regular: var(--fs-800);
+    --font-size-heading-lg: var(--fs-900);
+    --font-size-heading-xl: var(--fs-1000);
+
+    --font-size-sm: var(--fs-300);
+    --font-size-regular: var(--fs-400);
+    --font-size-md: var(--fs-500);
+    --font-size-lg: var(--fs-600);
+
+    --border-radius-1: 0.25rem;
+    --border-radius-2: 0.5rem;
+    --border-radius-3: 0.75rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--ff-body);
+    font-size: var(--font-size-regular);
+    color: var(--text-main);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ff-heading);
+    font-weight: 700;
+    color: var(--text-extra-dark);
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
