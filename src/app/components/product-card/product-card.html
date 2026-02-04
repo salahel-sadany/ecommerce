@@ -1,0 +1,34 @@
+<button (click)="onToggleWishlist()" class="heart" [class.wishlisted]="isWishlisted()">
+  @if (isWishlisted()) {
+    <i class="fa-solid fa-heart"></i>
+  } @else {
+    <i class="fa-regular fa-heart"></i>
+  }
+</button>
+
+<img [src]="product().imageUrl" [alt]="product().description" />
+
+<div class="content flow">
+  <h2>{{ product().name }}</h2>
+  <p>{{ product().description }}</p>
+
+  <p [class]="product().inStock ? 'in-stock' : 'out-stock'">
+    {{ product().inStock ? 'In Stock' : 'Out of Stock' }}
+  </p>
+
+  <div class="stars">
+    <i class="fa-solid fa-star"></i>
+    <i class="fa-solid fa-star"></i>
+    <i class="fa-solid fa-star"></i>
+    <i class="fa-solid fa-star"></i>
+    <i class="fa-solid fa-star"></i>
+    <span>({{ product().reviewCount }})</span>
+  </div>
+
+  <div class="flex-between">
+    <p class="price">{{ product().price | currency }}</p>
+    <button class="btn" data-type="primary">
+      <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+    </button>
+  </div>
+</div>

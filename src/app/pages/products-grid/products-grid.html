@@ -1,1 +1,10 @@
-<p>products-grid works!</p>
+<div class="flow">
+  <h1>{{ category() }}</h1>
+  <p>{{ filteredProducts().length }} products found</p>
+
+  <div class="grid-auto-fill">
+    @for (product of filteredProducts(); track product.id) {
+      <app-product-card [product]="product" />
+    }
+  </div>
+</div>

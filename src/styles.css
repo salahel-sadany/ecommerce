@@ -142,6 +142,7 @@
     font-family: var(--ff-body);
     font-size: var(--font-size-regular);
     color: var(--text-main);
+    background-color: rgb(250, 249, 253);
   }
 
   h1,
@@ -218,6 +219,26 @@
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  }
+
+  .grid-auto-fill {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  }
+
+  .main-content {
+    padding: 2rem;
+  }
+
+  .flow > * + * {
+    margin-block-start: 1em;
+  }
+
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
