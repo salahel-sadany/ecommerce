@@ -1,4 +1,7 @@
-<app-header />
+<app-header (sidenavToggled)="isSidenavOpen.set(!isSidenavOpen())" />
+
+<app-sidenav (sidenavClosed)="isSidenavOpen.set(false)" [isSidenavOpen]="isSidenavOpen()" />
+<div (click)="onCloseSidenav()" (window:keyup.escape)="onCloseSidenav()" class="overlay"></div>
 
 <main class="main-content">
   <router-outlet />

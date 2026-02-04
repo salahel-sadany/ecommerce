@@ -1,10 +1,12 @@
-<div class="flow">
-  <h1>{{ category() }}</h1>
-  <p>{{ filteredProducts().length }} products found</p>
+<section class="section" data-padding="compact">
+  <div class="flow">
+    <h1>{{ category() | titlecase }}</h1>
+    <p>{{ filteredProducts().length }} products found</p>
 
-  <div class="grid-auto-fill">
-    @for (product of filteredProducts(); track product.id) {
-      <app-product-card [product]="product" />
-    }
+    <div class="grid-auto-fill">
+      @for (product of filteredProducts(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
   </div>
-</div>
+</section>

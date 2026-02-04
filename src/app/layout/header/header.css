@@ -1,6 +1,10 @@
 .site-header {
   padding-block: 1rem;
   box-shadow: 0 2px 5px rgb(0 0 0 /0.2);
+  z-index: 999;
+  position: fixed;
+  inline-size: 100%;
+  background-color: #faf9fd;
 
   .site-header__inner {
     display: grid;

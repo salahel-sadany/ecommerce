@@ -1,0 +1,15 @@
+<nav class="sidenav" [class.open]="isSidenavOpen()">
+  <h3>Categories</h3>
+  <ul role="list">
+    @for (cat of categories(); track cat) {
+      <li
+        (click)="sidenavClosed.emit()"
+        class="btn"
+        [routerLink]="['/products', cat]"
+        routerLinkActive="btn-primary"
+      >
+        <a>{{ cat | titlecase }}</a>
+      </li>
+    }
+  </ul>
+</nav>

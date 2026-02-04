@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ProductsGrid from './products-grid';
+import { Sidenav } from './sidenav';
 
-describe('ProductsGrid', () => {
-  let component: ProductsGrid;
-  let fixture: ComponentFixture<ProductsGrid>;
+describe('Sidenav', () => {
+  let component: Sidenav;
+  let fixture: ComponentFixture<Sidenav>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductsGrid],
-    }).compileComponents();
+      imports: [Sidenav]
+    })
+    .compileComponents();
 
-    fixture = TestBed.createComponent(ProductsGrid);
+    fixture = TestBed.createComponent(Sidenav);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
