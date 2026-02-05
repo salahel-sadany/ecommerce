@@ -1,9 +1,5 @@
-<button (click)="onToggleWishlist()" class="heart" [class.wishlisted]="isWishlisted()">
-  @if (isWishlisted()) {
-    <i class="fa-solid fa-heart"></i>
-  } @else {
-    <i class="fa-regular fa-heart"></i>
-  }
+<button (click)="onToggleWishlist()" class="icon">
+  <ng-content select="i" />
 </button>
 
 <img [src]="product().imageUrl" [alt]="product().description" />

@@ -133,6 +133,7 @@ export class ProductsService {
       category: 'Outdoor',
     },
   ]);
+  private readonly wishlistProductsSignal = signal<Product[]>([]);
   private readonly categoriesSignal = signal<string[]>([
     'all',
     'electronics',
@@ -144,4 +145,31 @@ export class ProductsService {
 
   readonly products = this.productsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
+  readonly wishlistProducts = this.wishlistProductsSignal.asReadonly();
+
+  addToWishlist(productId: string) {
+    this.wishlistProductsSignal.update((wishListProducts) => {
+      if (this.isInWishlist(productId)) return [...wishListProducts];
+
+      const wishlistedProduct = this.products().find((p) => p.id === productId);
+
+      if (wishlistedProduct) return [...wishListProducts, wishlistedProduct];
+      else return [...wishListProducts];
+    });
+  }
+
+  removeFromWishlist(productId: string) {
+    this.wishlistProductsSignal.update((wishlistProducts) => {
+      const newWishlistProducts = wishlistProducts.filter((p) => p.id !== productId);
+      return newWishlistProducts;
+    });
+  }
+
+  clearWishlist() {
+    this.wishlistProductsSignal.set([]);
+  }
+
+  isInWishlist(productId: string): boolean {
+    return this.wishlistProducts().some((p) => p.id === productId);
+  }
 }

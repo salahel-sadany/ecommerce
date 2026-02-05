@@ -5,7 +5,16 @@
 
     <div class="grid-auto-fill">
       @for (product of filteredProducts(); track product.id) {
-        <app-product-card [product]="product" />
+        <app-product-card [product]="product">
+          @if (productsService.isInWishlist(product.id)) {
+            <i
+              class="fa-solid fa-heart"
+              [class.wishlisted]="productsService.isInWishlist(product.id)"
+            ></i>
+          } @else {
+            <i class="fa-regular fa-heart"></i>
+          }
+        </app-product-card>
       }
     </div>
   </div>

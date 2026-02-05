@@ -1,6 +1,21 @@
-import { Component, input, output, signal } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  computed,
+  contentChild,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Product } from '../../models/product';
 import { CurrencyPipe } from '@angular/common';
+import { ProductsService } from '../../services/products-service';
+import { ToasterService } from '../../services/toaster-service';
 
 @Component({
   selector: 'app-product-card',
@@ -9,17 +24,22 @@ import { CurrencyPipe } from '@angular/common';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
+  private readonly productsService = inject(ProductsService);
+  private readonly toaster = inject(ToasterService);
   readonly product = input.required<Product>();
-  addedToWishlist = output<string>();
-  removedFromWishlist = output<string>();
-  isWishlisted = signal(false);
+  readonly wishlistClicked = output<string>();
+
+  isWishlisted = computed(() => this.productsService.isInWishlist(this.product().id));
 
   onToggleWishlist() {
     if (this.isWishlisted()) {
-      this.removedFromWishlist.emit(this.product().id);
+      this.productsService.removeFromWishlist(this.product().id);
+      this.toaster.success('Product is removed from wishlist');
     } else {
-      this.addedToWishlist.emit(this.product().id);
+      this.productsService.addToWishlist(this.product().id);
+      this.toaster.success('Product is added to wishlist');
     }
-    this.isWishlisted.update(() => !this.isWishlisted());
+
+    this.wishlistClicked.emit(this.product().id);
   }
 }

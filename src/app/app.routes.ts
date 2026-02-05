@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import ProductsGrid from './pages/products-grid/products-grid';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,8 @@ export const routes: Routes = [
   },
   {
     path: 'products/:category',
-    loadComponent: () => import('./pages/products-grid/products-grid'),
+    // loadComponent: () => import('./pages/products-grid/products-grid'),
+    component: ProductsGrid,
   },
   {
     path: 'wishlist',

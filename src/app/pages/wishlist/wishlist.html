@@ -1,1 +1,31 @@
-<p>wishlist works!</p>
+<section class="section" data-padding="compact">
+  <div class="wrapper">
+    <div class="flow">
+      <app-back-button class="back-btn" btnLabel="Continue Shopping" path="/products/all" />
+
+      @if (wishlist().length > 0) {
+        <div class="flex-between">
+          <h1>My Wishlist</h1>
+          <p class="font-size-lg">{{ [wishlist().length] }} items</p>
+        </div>
+        <div class="grid-auto-fill">
+          @for (product of wishlist(); track product.id) {
+            <app-product-card [product]="product">
+              <i class="fa-solid fa-trash"></i>
+            </app-product-card>
+          }
+        </div>
+
+        <button (click)="onClearWishlist()" class="btn btn-danger">Clear Wishlist</button>
+      } @else {
+        <div class="icon-heart">
+          <i class="fa-regular fa-heart"></i>
+        </div>
+
+        <h2>Your wishlist is empty</h2>
+        <p class="font-size-sm">Save items you love for later!</p>
+        <button class="btn" data-type="primary" routerLink="/products/all">Start Shopping</button>
+      }
+    </div>
+  </div>
+</section>

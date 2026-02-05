@@ -1,5 +1,6 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ProductsService } from '../../services/products-service';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,9 @@ import { RouterLink } from '@angular/router';
 export class Header {
   isSidenavOpen = signal(false);
   sidenavToggled = output<boolean>();
+
+  private readonly productsService = inject(ProductsService);
+  wishlist = this.productsService.wishlistProducts;
 
   onToggleSidenav() {
     this.isSidenavOpen.update(() => !this.isSidenavOpen());

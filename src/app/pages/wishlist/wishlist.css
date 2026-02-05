@@ -1,0 +1,35 @@
+.section {
+  text-align: center;
+
+  .flow {
+    --flow-margin: 2em;
+  }
+}
+
+.btn-danger {
+  margin-inline: auto;
+  color: var(--clr-red-500);
+  border: 1px solid currentColor;
+  display: block;
+
+  &:hover {
+    background-color: oklch(from var(--clr-red-500) l c h / 0.2);
+  }
+}
+
+.fa-trash {
+  color: #495057;
+}
+
+.icon-heart {
+  font-size: var(--font-size-heading-sm);
+  color: var(--text-extra-dark);
+  background-color: #f3f3f3;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-inline: auto;
+}

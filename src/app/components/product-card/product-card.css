@@ -10,7 +10,7 @@
 
   position: relative;
 
-  .heart {
+  .icon {
     color: rgb(170 170 170);
     background-color: rgb(255 255 255 / 0.8);
     position: absolute;
@@ -27,12 +27,6 @@
 
     &:hover {
       scale: 1.1;
-    }
-  }
-
-  .heart.wishlisted {
-    i {
-      color: var(--clr-red-500);
     }
   }
 

@@ -17,8 +17,13 @@
       </div>
 
       <div>
-        <a class="btn" routerLink="wishlist">
+        <a class="btn btn-wishlist" routerLink="wishlist">
           <i class="fa-solid fa-heart"></i>
+          @if (wishlist().length > 0) {
+            <p class="badge">
+              {{ wishlist().length }}
+            </p>
+          }
         </a>
 
         <a class="btn" routerLink="/">

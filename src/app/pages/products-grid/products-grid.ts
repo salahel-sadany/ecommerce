@@ -12,7 +12,7 @@ import { ProductsService } from '../../services/products-service';
   styleUrl: './products-grid.css',
 })
 export default class ProductsGrid {
-  private productsService = inject(ProductsService);
+  protected readonly productsService = inject(ProductsService);
   protected readonly products = this.productsService.products;
   protected readonly categories = this.productsService.categories;
 

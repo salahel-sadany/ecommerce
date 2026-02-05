@@ -1,0 +1,12 @@
+.btn-back {
+  color: var(--background-main);
+  display: block;
+
+  &:hover {
+    background-color: oklch(from var(--background-main) l c h / 0.2);
+  }
+
+  i {
+    margin-inline-end: 1rem;
+  }
+}

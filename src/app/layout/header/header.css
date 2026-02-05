@@ -56,4 +56,26 @@
       box-shadow: 0 0 0 3px oklch(from var(--background-main) l c h / 0.2);
     }
   }
+
+  .btn-wishlist {
+    position: relative;
+
+    .badge {
+      position: absolute;
+      background-color: var(--clr-red-500);
+      border-radius: 50%;
+      width: 1.25rem;
+      height: 1.25rem;
+
+      inset-block-start: -5px;
+      inset-inline-end: -5px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: var(--font-size-sm);
+      color: var(--text-high-contrast);
+    }
+  }
 }
