@@ -1,0 +1,48 @@
+article {
+  background-color: #fff;
+  border-radius: var(--border-radius-3);
+  padding: 1.5rem 2rem;
+  border: 1px solid #ccc;
+}
+
+.wishlist-info {
+  .info-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    i {
+      color: var(--clr-red-500);
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  .btn-group {
+    & > * + * {
+      margin-inline-start: 1rem;
+    }
+
+    a.btn {
+      color: var(--background-main);
+
+      &:hover {
+        background-color: oklch(from var(--background-main) l c h / 0.2);
+      }
+    }
+
+    i {
+      margin-inline-end: 0.5rem;
+    }
+  }
+}
+
+.cart-info {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+
+  @media (width<917px) {
+    grid-template-columns: 1fr;
+  }
+}

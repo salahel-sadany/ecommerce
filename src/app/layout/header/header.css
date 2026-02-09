@@ -57,7 +57,8 @@
     }
   }
 
-  .btn-wishlist {
+  .btn-wishlist,
+  .btn-cart {
     position: relative;
 
     .badge {

@@ -16,4 +16,8 @@ export const routes: Routes = [
     path: 'wishlist',
     loadComponent: () => import('./pages/wishlist/wishlist'),
   },
+  {
+    path: 'cart',
+    loadComponent: () => import('./pages/cart/cart'),
+  },
 ];

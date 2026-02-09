@@ -1,0 +1,46 @@
+<section class="section" data-padding="compact">
+  <div class="wrapper">
+    <div class="flow">
+      <app-back-button btnLabel="Continue Shopping" path="/products/all" />
+      <h1>Shopping Cart</h1>
+
+      <article class="wishlist-info flex-between">
+        <div class="info-group">
+          <i class="fa-regular fa-heart"></i>
+          <div>
+            <h3>Wishlist ({{ wishlist().length }} items)</h3>
+            <p>You have {{ wishlist().length }} item saved for later</p>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <a routerLink="/wishlist" class="btn">View All</a>
+          <button (click)="onAddAlltoCart()" class="btn" data-type="primary">
+            <i class="fa-solid fa-cart-shopping"></i>Add All to Cart
+          </button>
+        </div>
+      </article>
+
+      <div class="cart-info">
+        <article>
+          <div class="flow" style="--flow-margin: 1.5em">
+            <h2>Cart Items ({{ cartItems().length }})</h2>
+            @for (item of cartItems(); track item.product.id) {
+              <app-cart-item [item]="item" />
+            }
+          </div>
+        </article>
+
+        <article>
+          <app-order-summary>
+            <ng-container actionButton>
+              <button style="inline-size: 100%" class="btn" data-type="primary">
+                Procced to Checkout
+              </button>
+            </ng-container>
+          </app-order-summary>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

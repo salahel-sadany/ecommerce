@@ -25,7 +25,6 @@ import { ToasterService } from '../../services/toaster-service';
 })
 export class ProductCard {
   private readonly productsService = inject(ProductsService);
-  private readonly toaster = inject(ToasterService);
   readonly product = input.required<Product>();
   readonly wishlistClicked = output<string>();
 
@@ -34,12 +33,14 @@ export class ProductCard {
   onToggleWishlist() {
     if (this.isWishlisted()) {
       this.productsService.removeFromWishlist(this.product().id);
-      this.toaster.success('Product is removed from wishlist');
     } else {
       this.productsService.addToWishlist(this.product().id);
-      this.toaster.success('Product is added to wishlist');
     }
 
     this.wishlistClicked.emit(this.product().id);
+  }
+
+  onAddToCart() {
+    this.productsService.addToCart(this.product().id);
   }
 }

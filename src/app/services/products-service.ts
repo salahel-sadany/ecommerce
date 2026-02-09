@@ -1,10 +1,14 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Product } from '../models/product';
+import { CartItem } from '../models/cart';
+import { ToasterService } from './toaster-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
+  private readonly toaster = inject(ToasterService);
+
   private readonly productsSignal = signal<Product[]>([
     // CATEGORY: Electronics
     {
@@ -142,25 +146,37 @@ export class ProductsService {
     'Fitness',
     'Outdoor',
   ]);
+  private readonly cartItemsSignal = signal<CartItem[]>([]);
 
   readonly products = this.productsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
   readonly wishlistProducts = this.wishlistProductsSignal.asReadonly();
+  readonly cartItems = this.cartItemsSignal.asReadonly();
+  readonly cartPrice = computed(() => {
+    const subTotal = this.cartItems().reduce(
+      (acc, item) => acc + item.quantity * item.product.price,
+      0,
+    );
+    return subTotal;
+  });
 
-  addToWishlist(productId: string) {
+  addToWishlist(productId: string, toastIt = true) {
     this.wishlistProductsSignal.update((wishListProducts) => {
       if (this.isInWishlist(productId)) return [...wishListProducts];
 
       const wishlistedProduct = this.products().find((p) => p.id === productId);
 
-      if (wishlistedProduct) return [...wishListProducts, wishlistedProduct];
-      else return [...wishListProducts];
+      if (wishlistedProduct) {
+        if (toastIt) this.toaster.success('Product is added to wishlist');
+        return [...wishListProducts, wishlistedProduct];
+      } else return [...wishListProducts];
     });
   }
 
-  removeFromWishlist(productId: string) {
+  removeFromWishlist(productId: string, toastIt = true) {
     this.wishlistProductsSignal.update((wishlistProducts) => {
       const newWishlistProducts = wishlistProducts.filter((p) => p.id !== productId);
+      if (toastIt) this.toaster.success('Product is removed from wishlist');
       return newWishlistProducts;
     });
   }
@@ -171,5 +187,63 @@ export class ProductsService {
 
   isInWishlist(productId: string): boolean {
     return this.wishlistProducts().some((p) => p.id === productId);
+  }
+
+  isInCart(productId: string): boolean {
+    return this.cartItems().some((i) => i.product.id === productId);
+  }
+
+  addToCart(productId: string, quantity = 1, toastIt = true) {
+    const addedProduct = this.products().find((p) => p.id === productId);
+
+    if (!addedProduct) return;
+
+    this.cartItemsSignal.update((items) => {
+      if (this.isInCart(productId)) {
+        if (toastIt) this.toaster.error('Product is already in cart');
+        return items;
+      }
+
+      if (toastIt) this.toaster.success('Product is added to cart');
+      return [
+        ...items,
+        {
+          product: addedProduct,
+          quantity,
+        },
+      ];
+    });
+  }
+
+  removeFromCart(productId: string, toastIt = true) {
+    this.cartItemsSignal.update((Items) => {
+      const newCartItems = Items.filter((i) => i.product.id !== productId);
+      if (toastIt) this.toaster.success('Product is removed from Cart');
+      return newCartItems;
+    });
+  }
+
+  increaseQuantity(item: CartItem) {
+    this.cartItemsSignal.update((items) =>
+      items.map((i) => (i.product.id === item.product.id ? { ...i, quantity: i.quantity + 1 } : i)),
+    );
+  }
+
+  decreaseQuantity(item: CartItem) {
+    if (item.quantity === 1) return;
+    this.cartItemsSignal.update((items) =>
+      items.map((i) => (i.product.id === item.product.id ? { ...i, quantity: i.quantity - 1 } : i)),
+    );
+  }
+
+  addAllToCart() {
+    const newCartItems: CartItem[] = [];
+
+    this.wishlistProducts().forEach((p) => {
+      if (!this.isInCart(p.id)) newCartItems.push({ product: p, quantity: 1 });
+    });
+
+    this.cartItemsSignal.update((items) => [...items, ...newCartItems]);
+    this.clearWishlist();
   }
 }

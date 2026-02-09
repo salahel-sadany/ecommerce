@@ -1,0 +1,27 @@
+<div>
+  <img [src]="item().product.imageUrl" [alt]="item().product.description" />
+  <h3>{{ item().product.name }}</h3>
+  <p>{{ item().product.price | currency }}</p>
+</div>
+
+<div>
+  <button (click)="onDecreaseQuantity(item())" class="btn btn-minus">
+    <i class="fa-solid fa-minus"></i>
+  </button>
+  <span> {{ item().quantity }}</span>
+  <button (click)="onIncreaseQuantity(item())" class="btn btn-plus">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</div>
+
+<div>
+  <p>{{ item().quantity * item().product.price | currency }}</p>
+  <div>
+    <button (click)="onAddToWishlist()" class="btn btn-heart">
+      <i class="fa-regular fa-heart"></i>
+    </button>
+    <button (click)="onRemoveFromCart()" class="btn btn-trash">
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+</div>

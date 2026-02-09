@@ -26,8 +26,13 @@
           }
         </a>
 
-        <a class="btn" routerLink="/">
+        <a class="btn btn-cart" routerLink="cart">
           <i class="fa-solid fa-cart-shopping"></i>
+          @if (cart().length > 0) {
+            <p class="badge">
+              {{ cart().length }}
+            </p>
+          }
         </a>
 
         <button class="btn">Sign In</button>

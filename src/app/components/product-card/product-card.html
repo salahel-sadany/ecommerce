@@ -23,7 +23,7 @@
 
   <div class="flex-between">
     <p class="price">{{ product().price | currency }}</p>
-    <button class="btn" data-type="primary">
+    <button (click)="onAddToCart()" class="btn" data-type="primary">
       <i class="fa-solid fa-cart-shopping"></i> Add to Cart
     </button>
   </div>

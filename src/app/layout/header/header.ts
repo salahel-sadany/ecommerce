@@ -9,11 +9,12 @@ import { ProductsService } from '../../services/products-service';
   styleUrl: './header.css',
 })
 export class Header {
-  isSidenavOpen = signal(false);
-  sidenavToggled = output<boolean>();
+  private isSidenavOpen = signal(false);
+  readonly sidenavToggled = output<boolean>();
 
   private readonly productsService = inject(ProductsService);
-  wishlist = this.productsService.wishlistProducts;
+  protected readonly wishlist = this.productsService.wishlistProducts;
+  protected readonly cart = this.productsService.cartItems;
 
   onToggleSidenav() {
     this.isSidenavOpen.update(() => !this.isSidenavOpen());

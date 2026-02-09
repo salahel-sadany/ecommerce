@@ -1,0 +1,25 @@
+:host {
+  color: var(--text-dark);
+
+  .cart-items-summary {
+    font-size: var(--font-size-sm);
+  }
+
+  p {
+    font-size: var(--font-size-md);
+    display: flex;
+    justify-content: space-between;
+
+    margin-block-end: 0.5rem;
+  }
+
+  .total {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .flow > * + div {
+    border-block-start: 1px solid black;
+    padding-block-start: 1rem;
+  }
+}
