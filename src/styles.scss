@@ -17,6 +17,28 @@ html {
       density: 0,
     )
   );
+
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 0.5rem,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 0.5rem,
+      filled-horizontal-padding: 0.75rem,
+      text-container-shape: 0.5rem,
+      text-horizontal-padding: 0.75rem,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 0.75rem,
+      container-text-size: 0.9rem,
+    )
+  );
 }
 
 body {

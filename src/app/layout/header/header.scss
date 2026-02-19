@@ -1,3 +1,10 @@
-.example-spacer {
-  flex: 1 1 auto;
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.form-field-overrides(
+    (
+      container-vertical-padding: 0.65rem,
+      container-height: 50%,
+    )
+  );
 }

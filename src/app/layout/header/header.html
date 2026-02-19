@@ -1,23 +1,30 @@
-<mat-toolbar>
-  <div class="wrapper flex">
-    <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
+<mat-toolbar class="px-24! py-8! gap-4 shadow-md">
+  <button matIconButton>
+    <mat-icon>menu</mat-icon>
+  </button>
 
+  <a href="/">
     <h1>Modern Store</h1>
+  </a>
 
-    <span class="example-spacer"></span>
+  <mat-form-field
+    appearance="outline"
+    subscriptSizing="dynamic"
+    class="mx-auto basis-1/2 drop-shadow-md"
+  >
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Search Products..." />
+  </mat-form-field>
 
-    <button
-      matIconButton
-      class="example-icon favorite-icon"
-      aria-label="Example icon-button with heart icon"
-    >
-      <mat-icon>favorite</mat-icon>
-    </button>
+  <button matIconButton>
+    <mat-icon>favorite</mat-icon>
+  </button>
 
-    <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>shopping_cart</mat-icon>
-    </button>
-  </div>
+  <button matIconButton>
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+
+  <button matButton="text">Sign In</button>
+
+  <button matButton="filled">Sign Up</button>
 </mat-toolbar>
