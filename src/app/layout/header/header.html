@@ -1,9 +1,9 @@
-<mat-toolbar class="px-24! py-8! gap-4 shadow-md">
+<mat-toolbar #header class="w-full px-24! py-8! gap-4 elevated z-50 fixed">
   <button matIconButton>
     <mat-icon>menu</mat-icon>
   </button>
 
-  <a href="/">
+  <a routerLink="/">
     <h1>Modern Store</h1>
   </a>
 
@@ -16,7 +16,7 @@
     <input matInput placeholder="Search Products..." />
   </mat-form-field>
 
-  <button matIconButton>
+  <button matIconButton routerLink="wishlist">
     <mat-icon>favorite</mat-icon>
   </button>
 

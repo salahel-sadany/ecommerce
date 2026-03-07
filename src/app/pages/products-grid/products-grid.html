@@ -1,0 +1,44 @@
+@let vm = store.vm();
+
+<mat-sidenav-container class="min-h-full">
+  <mat-sidenav class="px-6 py-40" mode="side" opened>
+    <h2 class="text-lg font-semibold mat-text-on-surface">Categories</h2>
+
+    <mat-nav-list>
+      @for (cat of vm.categories; track cat) {
+        <mat-list-item
+          class="my-2"
+          [routerLink]="['/products', cat]"
+          [activated]="cat === category()"
+        >
+          <span
+            matListItemTitle
+            class="font-medium"
+            [class.mat-text-on-primary]="cat === category()"
+            [style]="{
+              '--mat-list-list-item-hover-label-text-color':
+                cat === category() ? ' var(--mat-sys-on-primary)' : null,
+              '--mat-list-list-item-focus-label-text-color':
+                cat === category() ? ' var(--mat-sys-on-primary)' : null,
+            }"
+          >
+            {{ cat | titlecase }}
+          </span>
+        </mat-list-item>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="px-6 py-40 mat-bg-surface-container-low">
+    <h1 class="text-2xl font-bold mb-1">{{ category() | titlecase }}</h1>
+    <p class="text-base mat-text-on-secondary-container mb-6">
+      {{ vm.filteredProductsCount }} products found
+    </p>
+
+    <div class="grid-auto-fill">
+      @for (product of vm.filteredProducts; track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
