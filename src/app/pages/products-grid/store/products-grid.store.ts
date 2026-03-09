@@ -30,6 +30,7 @@ export const ProductsGridStore = signalStore(
     setCategory: signalMethod((category: string) =>
       updateState(store, 'Category Update', { selectedCategory: category.toLowerCase() }),
     ),
+    isInWishlist: store._appStore.isInWishlist,
   })),
   withDevtools('products-grid-store'),
 );

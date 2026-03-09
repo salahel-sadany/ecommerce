@@ -1,3 +1,5 @@
+@let vm = store.vm();
+
 <mat-toolbar #header class="w-full px-24! py-8! gap-4 elevated z-50 fixed">
   <button matIconButton>
     <mat-icon>menu</mat-icon>
@@ -16,11 +18,16 @@
     <input matInput placeholder="Search Products..." />
   </mat-form-field>
 
-  <button matIconButton routerLink="wishlist">
+  <button
+    matIconButton
+    routerLink="wishlist"
+    [matBadge]="vm.wishlistCount"
+    [matBadgeHidden]="vm.wishlistCount <= 0"
+  >
     <mat-icon>favorite</mat-icon>
   </button>
 
-  <button matIconButton>
+  <button matIconButton [matBadge]="vm.cartItemsCount" [matBadgeHidden]="vm.cartItemsCount <= 0">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 

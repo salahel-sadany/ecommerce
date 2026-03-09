@@ -7,6 +7,7 @@ import { MatListItem, MatNavList, MatListItemTitle } from '@angular/material/lis
 import { RouterLink } from '@angular/router';
 import { AppStore } from '../../store/app.store';
 import { ProductsGridStore } from './store/products-grid.store';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-products-grid',
@@ -20,6 +21,7 @@ import { ProductsGridStore } from './store/products-grid.store';
     MatListItem,
     RouterLink,
     MatListItemTitle,
+    MatIcon,
   ],
   templateUrl: './products-grid.html',
   styleUrl: './products-grid.scss',

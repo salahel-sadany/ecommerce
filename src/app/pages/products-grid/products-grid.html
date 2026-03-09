@@ -1,7 +1,7 @@
 @let vm = store.vm();
 
 <mat-sidenav-container class="min-h-full">
-  <mat-sidenav class="px-6 py-40" mode="side" opened>
+  <mat-sidenav class="px-6 pt-22 fixed!" mode="side" opened>
     <h2 class="text-lg font-semibold mat-text-on-surface">Categories</h2>
 
     <mat-nav-list>
@@ -29,7 +29,7 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content class="px-6 py-40 mat-bg-surface-container-low">
+  <mat-sidenav-content class="px-6 pt-22 mat-bg-surface-container-low">
     <h1 class="text-2xl font-bold mb-1">{{ category() | titlecase }}</h1>
     <p class="text-base mat-text-on-secondary-container mb-6">
       {{ vm.filteredProductsCount }} products found
@@ -37,7 +37,13 @@
 
     <div class="grid-auto-fill">
       @for (product of vm.filteredProducts; track product.id) {
-        <app-product-card [product]="product" />
+        <app-product-card [product]="product">
+          <mat-icon
+            [class.text-red-500!]="store.isInWishlist(product)"
+            ngProjectAs="toggle-wishlist-icon"
+            >{{ store.isInWishlist(product) ? 'favorite' : 'favorite_border' }}</mat-icon
+          >
+        </app-product-card>
       }
     </div>
   </mat-sidenav-content>
