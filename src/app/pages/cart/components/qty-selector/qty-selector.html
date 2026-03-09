@@ -1,0 +1,11 @@
+<div class="flex items-center gap-4">
+  <button matIconButton [disabled]="quantity() <= 1" (click)="quantityUpdated.emit(quantity() - 1)">
+    <mat-icon>remove</mat-icon>
+  </button>
+
+  <p>{{ quantity() }}</p>
+
+  <button matIconButton (click)="quantityUpdated.emit(quantity() + 1)">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

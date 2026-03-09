@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, input as inputRoute, signal } from '@angular/core';
-import { type Product } from '../../models/product';
+import { type Product } from '../../models/product.model';
 import { TitleCasePipe } from '@angular/common';
 import { ProductCard } from '../../components/product-card/product-card';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';

@@ -20,14 +20,19 @@
 
   <button
     matIconButton
-    routerLink="wishlist"
+    routerLink="/wishlist"
     [matBadge]="vm.wishlistCount"
     [matBadgeHidden]="vm.wishlistCount <= 0"
   >
     <mat-icon>favorite</mat-icon>
   </button>
 
-  <button matIconButton [matBadge]="vm.cartItemsCount" [matBadgeHidden]="vm.cartItemsCount <= 0">
+  <button
+    matIconButton
+    routerLink="/cart"
+    [matBadge]="vm.cartItemsCount"
+    [matBadgeHidden]="vm.cartItemsCount <= 0"
+  >
     <mat-icon>shopping_cart</mat-icon>
   </button>
 

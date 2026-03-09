@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { Product } from '../../models/product';
+import { Product } from '../../models/product.model';
 import { CurrencyPipe } from '@angular/common';
 import { MatButton, MatIconButton, MatFabButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';

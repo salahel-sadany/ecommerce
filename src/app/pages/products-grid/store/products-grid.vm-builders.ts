@@ -1,4 +1,4 @@
-import { Product } from '../../../models/product';
+import { Product } from '../../../models/product.model';
 import { ProductsGridVM } from '../../../view-models/products-grid.vm';
 
 export function createProductsGridVm(

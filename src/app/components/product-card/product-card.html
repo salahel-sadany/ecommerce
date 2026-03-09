@@ -40,7 +40,7 @@
 
     <div class="flex justify-between items-center">
       <span class="text-2xl font-bold">{{ product().price | currency }}</span>
-      <button matButton="filled" class="flex gap-1.5">
+      <button matButton="filled" class="flex gap-1.5" (click)="store.addTocart(product())">
         <mat-icon>shopping_cart</mat-icon>
         <p>Add to Cart</p>
       </button>
