@@ -8,6 +8,14 @@
 /* Importing @ngxpert/hot-toast SCSS file. */
 @use '@ngxpert/hot-toast/styles';
 
+:root {
+  @include mat.dialog-overrides(
+    (
+      container-shape: 12px,
+    )
+  );
+}
+
 html {
   height: 100%;
   @include mat.theme(

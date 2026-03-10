@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import Cart from './cart';
+import { SignInDialog } from './sign-in-dialog';
 
-describe('Cart', () => {
-  let component: Cart;
-  let fixture: ComponentFixture<Cart>;
+describe('SignInDialog', () => {
+  let component: SignInDialog;
+  let fixture: ComponentFixture<SignInDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cart],
-    }).compileComponents();
+      imports: [SignInDialog]
+    })
+    .compileComponents();
 
-    fixture = TestBed.createComponent(Cart);
+    fixture = TestBed.createComponent(SignInDialog);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

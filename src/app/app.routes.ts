@@ -21,4 +21,10 @@ export const routes: Routes = [
     providers: [WishlistStore],
   },
   { path: 'cart', loadComponent: () => import('./pages/cart/cart'), providers: [CartStore] },
+  {
+    path: 'checkout',
+    loadComponent: () => import('./pages/checkout/checkout'),
+    providers: [CartStore],
+  },
+  { path: 'order-success', loadComponent: () => import('./pages/order-success/order-success') },
 ];

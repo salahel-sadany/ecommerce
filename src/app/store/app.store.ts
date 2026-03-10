@@ -23,6 +23,11 @@ import { PRODUCTS } from '../data/products.const';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { createAppVm } from './app.vm-builders';
 import { cartConfig, productsConfig, wishlistConfig } from './entity.config';
+import { CartItem } from '../models/cartItem.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
+import { AuthStore } from '../auth/store/auth.store';
+import { Router } from '@angular/router';
 
 export const AppStore = signalStore(
   {
@@ -31,7 +36,15 @@ export const AppStore = signalStore(
   withState(initialAppSlice),
   withProps((store) => ({
     _toast: inject(HotToastService),
+    _dialog: inject(MatDialog),
+    _auth: inject(AuthStore),
+    _router: inject(Router),
+
     _clearWishlist: () => updateState(store, 'Wishlist Cleard', removeAllEntities(wishlistConfig)),
+    _addToWishlist: (product: Product) =>
+      updateState(store, 'Product Added to Wishlist', addEntity(product, wishlistConfig)),
+    _removeCartItem: (itemId: string) =>
+      updateState(store, 'Cart Item is removed', removeEntity(itemId, cartConfig)),
   })),
   withEntities(productsConfig),
   withEntities(wishlistConfig),
@@ -41,7 +54,7 @@ export const AppStore = signalStore(
   })),
   withMethods((store) => ({
     addToWishlist: (product: Product) => {
-      updateState(store, 'Product Added to Wishlist', addEntity(product, wishlistConfig));
+      store._addToWishlist(product);
       store._toast.success('Product is added to wishlist');
     },
     removeFromWishlist: (productId: string) => {
@@ -78,13 +91,35 @@ export const AppStore = signalStore(
 
       store._clearWishlist();
     },
-    setCartItemQuantity: (itemId: string, quantity: number) =>
+    setCartItemQuantity: (itemId: string, quantity: number) => {
       updateState(
         store,
         'Cart item quantity set',
         updateEntity({ id: itemId, changes: { quantity } }, cartConfig),
-      ),
+      );
+    },
+    removeCartItem: store._removeCartItem,
+    addCartItemToWishlist: (item: CartItem) => {
+      const { quantity, ...product } = item;
+
+      store._addToWishlist(product);
+      store._removeCartItem(item.id);
+    },
+    proceedToCheckout: () => {
+      if (store._auth.user()) {
+        store._router.navigate(['checkout']);
+        return;
+      }
+
+      store._dialog.open(SignInDialog, {
+        disableClose: true,
+        data: {
+          checkout: true,
+        },
+      });
+    },
   })),
+
   withHooks((store) => ({
     onInit: () => updateState(store, 'Products Set', setAllEntities(PRODUCTS, productsConfig)),
   })),

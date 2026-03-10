@@ -2,11 +2,7 @@
 
 <section class="pt-22">
   <div class="wrapper">
-    <app-back-button
-      class="justify-self-start"
-      label="Continue Shopping"
-      navigateTo="/products/all"
-    />
+    <app-back-button label="Continue Shopping" navigateTo="/products/all" />
 
     <h1 class="text-3xl font-extrabold mb-4">Shopping Cart</h1>
 
@@ -20,7 +16,16 @@
       </div>
 
       <div>
-        <app-order-summary />
+        <app-order-summary>
+          <button
+            class="w-full mt-6 p-3"
+            ngProjectAs="actionButton"
+            matButton="filled"
+            (click)="store.proceedToCheckout()"
+          >
+            Proceed to Checkout
+          </button>
+        </app-order-summary>
       </div>
     </div>
   </div>

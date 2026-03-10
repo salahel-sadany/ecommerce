@@ -19,12 +19,13 @@
 
   <div class="flex flex-col items-end">
     <p class="text-lg font-semibold">{{ item().totalPrice | currency }}</p>
+
     <div class="flex -me-3">
-      <button matIconButton>
+      <button matIconButton (click)="store.addToWishlist(cartItem())">
         <mat-icon>favorite_border</mat-icon>
       </button>
 
-      <button matIconButton class="danger">
+      <button matIconButton class="danger" (click)="store.removeCartItem(item().id)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>

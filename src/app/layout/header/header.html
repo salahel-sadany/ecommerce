@@ -9,11 +9,7 @@
     <h1>Modern Store</h1>
   </a>
 
-  <mat-form-field
-    appearance="outline"
-    subscriptSizing="dynamic"
-    class="mx-auto basis-1/2 drop-shadow-md"
-  >
+  <mat-form-field class="mx-auto basis-1/2 drop-shadow-md">
     <mat-icon matPrefix>search</mat-icon>
     <input matInput placeholder="Search Products..." />
   </mat-form-field>
@@ -36,7 +32,29 @@
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
-  <button matButton="text">Sign In</button>
+  @if (auth.user(); as user) {
+    <button matIconButton [matMenuTriggerFor]="userMenu">
+      <img
+        class="rounded-full aspect-square object-cover object-center"
+        [src]="user.imageUrl"
+        [alt]="user.name"
+      />
+    </button>
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <div class="px-3 min-w-50">
+        <p class="text-sm font-bold">{{ user.name }}</p>
+        <p class="text-xs mat-text-on-secondary-container">{{ user.email }}</p>
+      </div>
 
-  <button matButton="filled">Sign Up</button>
+      <mat-divider />
+
+      <button class="min-h-8!" mat-menu-item (click)="auth.logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  } @else {
+    <button matButton="text" (click)="openSignInDialog()">Sign In</button>
+    <button matButton="filled" (click)="openSignUpDialog()">Sign Up</button>
+  }
 </mat-toolbar>
