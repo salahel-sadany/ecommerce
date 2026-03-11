@@ -1,4 +1,12 @@
-import { Component, computed, ElementRef, inject, viewChild } from '@angular/core';
+import {
+  afterEveryRender,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormField, MatPrefix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -37,12 +45,18 @@ import { SignInDialog } from '../../auth/components/sign-in-dialog/sign-in-dialo
 })
 export class Header {
   private headerEl = viewChild.required('header', { read: ElementRef });
-  protected readonly headerHeight = computed(() => this.headerEl().nativeElement.offsetHeight);
+  protected readonly headerHeight = signal(0);
 
   protected readonly dialog = inject(MatDialog);
 
   protected readonly store = inject(AppStore);
   protected readonly auth = inject(AuthStore);
+
+  constructor() {
+    afterEveryRender({
+      read: () => this.headerHeight.set(this.headerEl().nativeElement.offsetHeight),
+    });
+  }
 
   protected openSignUpDialog() {
     this.dialog.open(SignUpDialog, {

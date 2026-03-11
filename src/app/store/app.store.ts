@@ -28,6 +28,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
 import { AuthStore } from '../auth/store/auth.store';
 import { Router } from '@angular/router';
+import { Order } from '../models/order.model';
 
 export const AppStore = signalStore(
   {
@@ -117,6 +118,25 @@ export const AppStore = signalStore(
           checkout: true,
         },
       });
+    },
+    placeOrder: () => {
+      const user = store._auth.user();
+
+      if (!user) {
+        store._toast.error('Please login to place an order');
+        return;
+      }
+
+      const order: Order = {
+        id: crypto.randomUUID(),
+        userId: user?.id || '',
+        total: store.cartItemsEntities().reduce((tot, item) => tot + item.quantity * item.price, 0),
+        items: store.cartItemsEntities(),
+        paymentStatus: 'success',
+      };
+
+      updateState(store, 'Order is placed successfully', removeAllEntities(cartConfig));
+      store._router.navigate(['order-success']);
     },
   })),
 

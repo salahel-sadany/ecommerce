@@ -17,6 +17,7 @@ export const CartStore = signalStore(
     removeCartItem: _appStore.removeCartItem,
     addToWishlist: _appStore.addCartItemToWishlist,
     proceedToCheckout: _appStore.proceedToCheckout,
+    placeOrder: _appStore.placeOrder,
   })),
   withDevtools('cart-store'),
 );
