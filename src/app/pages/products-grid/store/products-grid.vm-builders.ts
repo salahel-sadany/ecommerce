@@ -4,6 +4,7 @@ import { ProductsGridVM } from '../../../view-models/products-grid.vm';
 export function createProductsGridVm(
   products: Product[],
   selectedCategory: string,
+  searchWord: string,
 ): ProductsGridVM {
   const filteredProducts = createFilteredProducts();
   const filteredProductsCount = filteredProducts.length;
@@ -16,7 +17,11 @@ export function createProductsGridVm(
       selectedCategory === 'all' ? products : p.category.toLowerCase() === selectedCategory,
     );
 
-    return filteredProducts;
+    const searchedFilteredProducts = filteredProducts.filter((p) =>
+      p.name.toLowerCase().includes(searchWord.trim().toLowerCase()),
+    );
+
+    return searchedFilteredProducts;
   }
 
   function createCategories() {

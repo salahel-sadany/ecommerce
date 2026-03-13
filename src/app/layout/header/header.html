@@ -1,7 +1,11 @@
 @let vm = store.vm();
 
-<mat-toolbar #header class="w-full px-24! py-8! gap-4 elevated z-50 fixed">
-  <button matIconButton>
+<mat-toolbar
+  #header
+  class="w-full px-24! py-8! gap-4 elevated z-50 fixed"
+  [style.view-transition-name]="'header'"
+>
+  <button matIconButton (click)="ui.toggleSidenav()">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -11,7 +15,12 @@
 
   <mat-form-field class="mx-auto basis-1/2 drop-shadow-md">
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput placeholder="Search Products..." />
+    <input
+      (keyup.enter)="onSearch($event)"
+      type="search"
+      matInput
+      placeholder="Search Products..."
+    />
   </mat-form-field>
 
   <button

@@ -11,28 +11,31 @@ import { createProductsGridVm } from './products-grid.vm-builders';
 import { AppStore } from '../../../store/app.store';
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { initialProductsGridSlice } from './product-grid.slice';
+import { UIStore } from '../../../store/ui.store';
 
 export const ProductsGridStore = signalStore(
   withState(initialProductsGridSlice),
   withProps((store) => {
     const _appStore = inject(AppStore);
     const _products = _appStore.productsEntities;
+    const _ui = inject(UIStore);
 
     return {
       _appStore,
       _products,
+      _ui,
     };
   }),
   withComputed((store) => ({
-    vm: computed(() => createProductsGridVm(store._products(), store.selectedCategory())),
+    vm: computed(() =>
+      createProductsGridVm(store._products(), store.selectedCategory(), store._ui.searchWord()),
+    ),
   })),
   withMethods((store) => ({
     setCategory: signalMethod((category: string) =>
       updateState(store, 'Category Update', { selectedCategory: category.toLowerCase() }),
     ),
     isInWishlist: store._appStore.isInWishlist,
-    toggleSidenav: () =>
-      updateState(store, 'Toggled sidenav', { isSidenavOpen: !store.isSidenavOpen }),
   })),
   withDevtools('products-grid-store'),
 );

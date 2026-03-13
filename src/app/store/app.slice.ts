@@ -1,7 +1,3 @@
-export interface AppSlice {
-  // readonly isSidenavOpened: boolean;
-}
+export interface AppSlice {}
 
-export const initialAppSlice: AppSlice = {
-  // isSidenavOpened: false,
-};
+export const initialAppSlice: AppSlice = {};
