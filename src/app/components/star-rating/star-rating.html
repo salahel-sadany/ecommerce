@@ -1,0 +1,11 @@
+<div class="flex items-center gap-2">
+  <div class="flex items-center">
+    @for (star of starArray(); track $index) {
+      <mat-icon [class]="star ? 'text-amber-300!' : 'text-gray-300!'">star</mat-icon>
+    }
+  </div>
+
+  <span class="mat-text-on-secondary-container text-base">
+    <ng-content />
+  </span>
+</div>

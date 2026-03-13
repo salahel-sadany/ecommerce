@@ -1,13 +1,15 @@
 import { Component, inject, input } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { CurrencyPipe } from '@angular/common';
-import { MatButton, MatIconButton, MatFabButton, MatMiniFabButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AppStore } from '../../store/app.store';
+import { RouterLink } from '@angular/router';
+import { StarRating } from '../star-rating/star-rating';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe, MatButton, MatIcon, MatIconButton],
+  imports: [CurrencyPipe, MatButton, MatIcon, RouterLink, MatIconButton, StarRating],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })

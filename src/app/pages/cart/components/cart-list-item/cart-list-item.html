@@ -1,9 +1,10 @@
 <article class="grid grid-cols-[3fr_1fr_1fr]">
   <div class="flex items-center gap-4">
     <img
+      [style.view-transition-name]="'product-image-' + item().id"
       [src]="item().imageUrl"
       [alt]="item().description"
-      class="w-24 h-24 rounded-lg object-cover aspect-square"
+      class="w-24 h-24 rounded-lg object-cover object-center aspect-square"
     />
 
     <div>

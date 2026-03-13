@@ -31,6 +31,8 @@ export const ProductsGridStore = signalStore(
       updateState(store, 'Category Update', { selectedCategory: category.toLowerCase() }),
     ),
     isInWishlist: store._appStore.isInWishlist,
+    toggleSidenav: () =>
+      updateState(store, 'Toggled sidenav', { isSidenavOpen: !store.isSidenavOpen }),
   })),
   withDevtools('products-grid-store'),
 );

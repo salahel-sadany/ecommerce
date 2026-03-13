@@ -1,6 +1,6 @@
 import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
 import { initalAuthSlice } from './auth.slice';
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
 import { UserSignIn, UserSignUp } from '../../models/user.model';
 import { inject } from '@angular/core';
 
@@ -14,12 +14,12 @@ export const AuthStore = signalStore(
     _dialog: inject(MatDialog),
     _router: inject(Router),
   })),
-  withComputed((store) => ({})),
+  withStorageSync('loggedin-user'),
   withMethods((store) => ({
     signIn: (data: UserSignIn) => {
       updateState(store, 'User logged in', {
         user: {
-          id: '1',
+          id: crypto.randomUUID(),
           name: 'John Doe',
           email: data.email,
           imageUrl:
@@ -35,7 +35,7 @@ export const AuthStore = signalStore(
     signUp: (data: UserSignUp) => {
       updateState(store, 'User created an account', {
         user: {
-          id: '1',
+          id: crypto.randomUUID(),
           name: data.name,
           email: data.email,
           imageUrl:

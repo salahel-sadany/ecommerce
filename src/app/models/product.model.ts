@@ -1,3 +1,5 @@
+import { UserReview } from './user-review.model';
+
 export interface Product {
   readonly id: string;
   readonly name: string;
@@ -8,4 +10,5 @@ export interface Product {
   readonly reviewCount: number;
   readonly inStock: boolean;
   readonly category: string;
+  readonly reviews: UserReview[];
 }

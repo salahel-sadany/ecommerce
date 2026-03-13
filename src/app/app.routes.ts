@@ -3,6 +3,7 @@ import { ProductsGrid } from './pages/products-grid/products-grid';
 import { ProductsGridStore } from './pages/products-grid/store/products-grid.store';
 import { WishlistStore } from './pages/wishlist/store/wishlist.store';
 import { CartStore } from './pages/cart/store/cart.store';
+import { ProductDetailsStore } from './pages/product-details/store/product-details.store';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,11 @@ export const routes: Routes = [
     path: 'products/:category',
     component: ProductsGrid,
     providers: [ProductsGridStore],
+  },
+  {
+    path: 'product/:productId',
+    loadComponent: () => import('./pages/product-details/product-details'),
+    providers: [ProductDetailsStore],
   },
   {
     path: 'wishlist',

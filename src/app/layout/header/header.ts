@@ -22,6 +22,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SignUpDialog } from '../../auth/components/sign-up-dialog/sign-up-dialog';
 import { SignInDialog } from '../../auth/components/sign-in-dialog/sign-in-dialog';
+import { ProductsGridStore } from '../../pages/products-grid/store/products-grid.store';
 
 @Component({
   selector: 'app-header',
@@ -50,6 +51,7 @@ export class Header {
   protected readonly dialog = inject(MatDialog);
 
   protected readonly store = inject(AppStore);
+  protected readonly productsStore = inject(ProductsGridStore);
   protected readonly auth = inject(AuthStore);
 
   constructor() {

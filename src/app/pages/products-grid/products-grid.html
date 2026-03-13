@@ -1,7 +1,7 @@
 @let vm = store.vm();
 
 <mat-sidenav-container class="min-h-full">
-  <mat-sidenav class="px-6 pt-22 fixed!" mode="side" opened>
+  <mat-sidenav class="px-6 pt-22 fixed!" mode="side" [opened]="store.isSidenavOpen()">
     <h2 class="text-lg font-semibold mat-text-on-surface">Categories</h2>
 
     <mat-nav-list>

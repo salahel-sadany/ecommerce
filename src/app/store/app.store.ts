@@ -7,7 +7,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { initialAppSlice } from './app.slice';
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import {
   addEntities,
@@ -50,6 +50,15 @@ export const AppStore = signalStore(
   withEntities(productsConfig),
   withEntities(wishlistConfig),
   withEntities(cartConfig),
+  withStorageSync({
+    key: 'modern-store',
+    select: ({ cartItemsEntityMap, cartItemsIds, wishlistIds, wishlistEntityMap }) => ({
+      cartItemsEntityMap,
+      wishlistEntityMap,
+      cartItemsIds,
+      wishlistIds,
+    }),
+  }),
   withComputed((store) => ({
     vm: computed(() => createAppVm(store.wishlistEntities(), store.cartItemsEntities())),
   })),
@@ -64,7 +73,7 @@ export const AppStore = signalStore(
     },
     isInWishlist: (product: Product) => store.wishlistIds().includes(product.id),
     clearWishlist: store._clearWishlist,
-    addTocart: (product: Product) => {
+    addToCart: (product: Product, quantity = 1) => {
       const isInCart = store.cartItemsIds().includes(product.id);
       if (isInCart) {
         updateState(
@@ -80,7 +89,7 @@ export const AppStore = signalStore(
         updateState(
           store,
           'Product is Added To Cart',
-          addEntity({ ...product, quantity: 1 }, cartConfig),
+          addEntity({ ...product, quantity }, cartConfig),
         );
         store._toast.success('Product is added to Cart');
       }

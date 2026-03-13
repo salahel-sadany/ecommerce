@@ -1,0 +1,60 @@
+<article appViewPanel class="space-y-8">
+  <div class="flex justify-between">
+    <h2 class="text-xl font-semibold">Customer Reviews</h2>
+
+    <button matButton="filled">Write a review</button>
+  </div>
+
+  <article
+    class="mat-bg-surface-container-low rounded-lg grid lg:grid-cols-2 gap-4 items-center p-4"
+  >
+    <div class="flex flex-col items-center gap-4">
+      <p class="text-4xl font-bold">{{ product().rating }}</p>
+      <app-star-rating [rating]="product().rating" />
+      <p class="mat-text-on-secondary-container text-base">
+        {{ 'Based on ' + product().reviews.length + ' reviews' }}
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      @for (breakdown of ratingBreakdown(); track breakdown.stars) {
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2">{{ breakdown.stars }} <mat-icon>star</mat-icon></div>
+
+          <div class="flex-1 h-2 bg-gray-300 rounded-full overflow-hidden">
+            <div
+              class="bg-amber-300 h-full transition-all duration-300"
+              [style.width.%]="breakdown.percentage"
+            ></div>
+          </div>
+
+          <p>{{ breakdown.count }}</p>
+        </div>
+      }
+    </div>
+  </article>
+
+  <div class="flex flex-col gap-8">
+    @for (review of sortedReviews(); track review.id) {
+      <article class="flex gap-4" appViewPanel>
+        <img
+          class="rounded-full h-16 aspect-square object-cover"
+          [src]="review.userImageUrl"
+          [alt]="review.userName"
+        />
+
+        <div class="py-1 space-y-3">
+          <p class="text-xl font-semibold">{{ review.userName }}</p>
+
+          <app-star-rating class="block" [rating]="review.rating">
+            {{ review.reviewDate | date }}
+          </app-star-rating>
+
+          <p class="text-lg font-medium">{{ review.title }}</p>
+
+          <p class="text-base mat-text-on-secondary-container">{{ review.comment }}</p>
+        </div>
+      </article>
+    }
+  </div>
+</article>
