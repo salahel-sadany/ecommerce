@@ -1,0 +1,63 @@
+<article class="p-8 max-w-100">
+  <header class="flex justify-between">
+    <div>
+      <h2 class="text-xl font-medium mb-1">Sign Up</h2>
+      <p class="mat-text-on-secondary-container text-sm">Join us and start shopping today</p>
+    </div>
+
+    <div>
+      <button tabindex="-1" matIconButton matDialogClose class="-mt-2 -me-2">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="signUpForm" class="mt-6" (ngSubmit)="signUp()">
+    <mat-form-field class="mb-4">
+      <input matInput type="text" placeholder="Enter your name" formControlName="name" />
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field class="mb-4">
+      <input matInput type="email" placeholder="Enter your email" formControlName="email" />
+      <mat-icon matPrefix>email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field class="mb-4">
+      <input
+        matInput
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+      />
+
+      <mat-icon matPrefix>lock</mat-icon>
+
+      <button matIconButton matSuffix type="button" class="me-2">
+        <!-- <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon> -->
+      </button>
+    </mat-form-field>
+
+    <mat-form-field class="mb-6">
+      <input
+        matInput
+        type="password"
+        placeholder="Confirm your password"
+        formControlName="confirmPassword"
+      />
+
+      <mat-icon matPrefix>lock</mat-icon>
+
+      <button matIconButton matSuffix type="button" class="me-2">
+        <!-- <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon> -->
+      </button>
+    </mat-form-field>
+
+    <button type="submit" class="w-full" matButton="filled">Create Account</button>
+
+    <p class="text-sm mat-text-on-secondary-container mt-2 text-center">
+      Don't have an account?
+      <a class="cursor-pointer mat-text-primary" (click)="openSignInDialog()">Sign In</a>
+    </p>
+  </form>
+</article>

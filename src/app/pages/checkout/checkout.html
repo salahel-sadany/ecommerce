@@ -1,0 +1,39 @@
+@let vm = store.vm();
+
+<section class="pt-22">
+  <div class="wrapper">
+    <app-back-button label="Back To Cart" navigateTo="/cart" />
+
+    <h1 class="text-3xl font-extrabold mb-4">Checkout</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div class="lg:col-span-3 flex flex-col gap-6">
+        <app-shipping-form />
+
+        <app-payment-form />
+      </div>
+
+      <div class="lg:col-span-2">
+        <app-order-summary>
+          <ng-container ngProjectAs="checkoutItems">
+            @for (item of vm.cartItems; track item.id) {
+              <p class="text-sm flex justify-between">
+                <span>{{ item.name }} x {{ item.quantity }} </span>
+                <span>{{ item.totalPrice | currency }}</span>
+              </p>
+            }
+          </ng-container>
+
+          <button
+            class="w-full mt-6 p-3"
+            ngProjectAs="actionButton"
+            matButton="filled"
+            (click)="store.placeOrder()"
+          >
+            Place Order
+          </button>
+        </app-order-summary>
+      </div>
+    </div>
+  </div>
+</section>

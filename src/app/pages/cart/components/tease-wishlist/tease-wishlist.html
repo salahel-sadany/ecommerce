@@ -1,0 +1,18 @@
+<article appViewPanel class="flex flex-wrap gap-3 items-center justify-between">
+  <div class="flex items-center gap-3">
+    <mat-icon class="text-red-500!">favorite_border</mat-icon>
+
+    <div>
+      <h2 class="text-xl font-bold">Wishlist ({{ count() }} Items)</h2>
+      <p class="mat-text-on-secondary-container">You have {{ count() }} item saved for later</p>
+    </div>
+  </div>
+
+  <div class="flex gap-3">
+    <button matButton routerLink="/wishlist">View All</button>
+    <button matButton="filled" (click)="store.addAllWishlistToCart()">
+      <mat-icon style="--mat-button-filled-icon-spacing: 8px">shopping_cart</mat-icon>
+      Add All to Cart
+    </button>
+  </div>
+</article>

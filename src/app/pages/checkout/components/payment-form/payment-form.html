@@ -1,0 +1,18 @@
+<article appViewPanel>
+  <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+    <mat-icon>payment</mat-icon>
+    <span>Payment Options</span>
+  </h2>
+
+  <form>
+    <mat-radio-group [value]="'stripe'">
+      <mat-radio-button value="stripe">
+        <img
+          class="h-6"
+          [src]="isDarkMode() ? 'Stripe wordmark - White.svg' : 'Stripe wordmark - Blurple.svg'"
+          alt="Stripe"
+        />
+      </mat-radio-button>
+    </mat-radio-group>
+  </form>
+</article>

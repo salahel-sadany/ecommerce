@@ -1,0 +1,26 @@
+@let vm = store.vm();
+
+<section class="p-22">
+  <div class="wrapper">
+    <app-back-button label="Back To Products" navigateTo="/products/all" />
+
+    @if (vm.product; as product) {
+      <div class="flex gap-8 mb-8 flex-wrap">
+        <img
+          [style.view-transition-name]="'product-image-' + product.id"
+          [src]="product.imageUrl"
+          [alt]="product.description"
+          class="w-125 h-137.5 object-cover object-center aspect-square rounded-lg"
+        />
+
+        <div class="flex-1">
+          <app-product-info [product]="product" />
+        </div>
+      </div>
+
+      <app-product-reviews [product]="vm.product" />
+    } @else {
+      <p>there is no such product</p>
+    }
+  </div>
+</section>

@@ -1,0 +1,408 @@
+export const PRODUCTS = [
+  // CATEGORY: Electronics
+  {
+    id: 'p1',
+    name: 'Vanguard Headphones',
+    description: 'High-fidelity noise canceling headphones with a 40-hour battery.',
+    price: 249.99,
+    imageUrl: 'https://picsum.photos/id/211/800/450',
+    rating: 4.9,
+    reviewCount: 1540,
+    inStock: true,
+    category: 'Electronics',
+    reviews: [
+      {
+        id: 'r1',
+        productId: 'p1',
+        userName: 'Alex Rivers',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Best ANC on the market',
+        comment: 'The silence is incredible. Perfect for my daily commute.',
+        reviewDate: new Date('2024-01-15'),
+      },
+      {
+        id: 'r12',
+        productId: 'p1',
+        userName: 'Sarah Chen',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Studio quality sound',
+        comment:
+          'The frequency response is incredibly flat. I use these for light mixing on the go.',
+        reviewDate: new Date('2024-02-02'),
+      },
+      {
+        id: 'r13',
+        productId: 'p1',
+        userName: 'Marcus Thorne',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Great, but a bit tight',
+        comment: 'Sound is 10/10, but the clamping force is a bit much for long sessions.',
+        reviewDate: new Date('2024-02-18'),
+      },
+    ],
+  },
+  {
+    id: 'p2',
+    name: 'Nebula 4K Projector',
+    description: 'Pocket-sized cinema experience with built-in streaming apps.',
+    price: 450.0,
+    imageUrl: 'https://picsum.photos/id/250/800/450',
+    rating: 4.6,
+    reviewCount: 89,
+    inStock: true,
+    category: 'Electronics',
+    reviews: [
+      {
+        id: 'r2',
+        productId: 'p2',
+        userName: 'Jordan Smith',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Great image, needs dark room',
+        comment: 'The 4K is crisp, but you definitely need blackout curtains.',
+        reviewDate: new Date('2024-02-10'),
+      },
+      {
+        id: 'r14',
+        productId: 'p2',
+        userName: 'Elena Rodriguez',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Perfect for movie night',
+        comment: 'The built-in Android TV is snappy. Setup took less than 5 minutes.',
+        reviewDate: new Date('2024-03-01'),
+      },
+    ],
+  },
+  // CATEGORY: Computing
+  {
+    id: 'p3',
+    name: 'Lumos RGB Keyboard',
+    description: 'Mechanical switches with customizable backlighting and macro keys.',
+    price: 129.99,
+    imageUrl: 'https://picsum.photos/id/160/800/450',
+    rating: 4.7,
+    reviewCount: 2105,
+    inStock: true,
+    category: 'Computing',
+    reviews: [
+      {
+        id: 'r3',
+        productId: 'p3',
+        userName: 'Casey Dev',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Clicky and bright!',
+        comment: 'The software for the RGB is actually easy to use. No bloatware.',
+        reviewDate: new Date('2024-03-01'),
+      },
+      {
+        id: 'r15',
+        productId: 'p3',
+        userName: 'Tasha Williams',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Solid build quality',
+        comment:
+          'The aluminum top plate makes it feel very premium. Heavy enough that it doesn’t slide.',
+        reviewDate: new Date('2024-03-12'),
+      },
+    ],
+  },
+  {
+    id: 'p4',
+    name: 'Arcane Wireless Mouse',
+    description: 'Ergonomic 16k DPI sensor with ultra-low latency wireless tech.',
+    price: 59.5,
+    imageUrl: 'https://picsum.photos/id/0/800/450',
+    rating: 4.4,
+    reviewCount: 450,
+    inStock: true,
+    category: 'Computing',
+    reviews: [
+      {
+        id: 'r4',
+        productId: 'p4',
+        userName: 'Riley G.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Smooth tracking',
+        comment: 'Very light and responsive, though the battery could be better.',
+        reviewDate: new Date('2024-02-20'),
+      },
+      {
+        id: 'r16',
+        productId: 'p4',
+        userName: 'Kevin Park',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop',
+        rating: 3,
+        title: 'Okay for small hands',
+        comment: 'A bit small for my palm grip, but the sensor performance is top-notch.',
+        reviewDate: new Date('2024-03-05'),
+      },
+    ],
+  },
+  {
+    id: 'p5',
+    name: 'PixelView 27" Monitor',
+    description: '4K IPS panel with 144Hz refresh rate for pro-grade color accuracy.',
+    price: 380.0,
+    imageUrl: 'https://picsum.photos/id/3/800/450',
+    rating: 4.8,
+    reviewCount: 312,
+    inStock: false,
+    category: 'Computing',
+    reviews: [
+      {
+        id: 'r5',
+        productId: 'p5',
+        userName: 'Sam V.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Stunning colors',
+        comment: 'Used for photo editing and gaming. Both look incredible.',
+        reviewDate: new Date('2024-01-05'),
+      },
+      {
+        id: 'r17',
+        productId: 'p5',
+        userName: 'Linda Gray',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Minimal backlight bleed',
+        comment: 'Best IPS panel I’ve owned. One tiny stuck pixel, but I can hardly see it.',
+        reviewDate: new Date('2024-02-14'),
+      },
+    ],
+  },
+  // CATEGORY: Home
+  {
+    id: 'p6',
+    name: 'Nordic Oak Table',
+    description: 'Solid oak construction with a minimalist Scandinavian design.',
+    price: 320.0,
+    imageUrl: 'https://picsum.photos/id/42/800/450',
+    rating: 4.5,
+    reviewCount: 128,
+    inStock: true,
+    category: 'Home',
+    reviews: [
+      {
+        id: 'r6',
+        productId: 'p6',
+        userName: 'Morgan L.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Solid build',
+        comment: 'Easy to assemble and very sturdy. Looks great in my dining room.',
+        reviewDate: new Date('2023-11-12'),
+      },
+      {
+        id: 'r18',
+        productId: 'p6',
+        userName: 'David Wu',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Beautiful wood grain',
+        comment: 'The finish is a bit more matte than I expected, but it’s high quality.',
+        reviewDate: new Date('2024-01-20'),
+      },
+    ],
+  },
+  {
+    id: 'p7',
+    name: 'Everest Backpack',
+    description: 'Waterproof 30L bag with a dedicated tech compartment for commuters.',
+    price: 85.0,
+    imageUrl: 'https://picsum.photos/id/161/800/450',
+    rating: 4.2,
+    reviewCount: 670,
+    inStock: true,
+    category: 'Home',
+    reviews: [
+      {
+        id: 'r7',
+        productId: 'p7',
+        userName: 'Jamie P.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1544717297-fa15739a5447?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Fits everything',
+        comment: 'The laptop sleeve is very well padded. A bit heavy when full.',
+        reviewDate: new Date('2024-03-05'),
+      },
+      {
+        id: 'r19',
+        productId: 'p7',
+        userName: 'Chris Miller',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'True waterproof',
+        comment: 'Got caught in a rainstorm and my MacBook stayed perfectly dry.',
+        reviewDate: new Date('2024-03-08'),
+      },
+    ],
+  },
+  // CATEGORY: Fitness
+  {
+    id: 'p8',
+    name: 'Onyx Adjustable Dumbbells',
+    description: 'Space-saving weights that adjust from 5 to 50 lbs instantly.',
+    price: 399.0,
+    imageUrl: 'https://picsum.photos/id/442/800/450',
+    rating: 4.7,
+    reviewCount: 1102,
+    inStock: true,
+    category: 'Fitness',
+    reviews: [
+      {
+        id: 'r8',
+        productId: 'p8',
+        userName: 'Taylor Fit',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1509439581779-6298f75db6e5?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Space saver',
+        comment: 'Replaced my whole rack with these. Mechanical dial is smooth.',
+        reviewDate: new Date('2024-02-28'),
+      },
+      {
+        id: 'r20',
+        productId: 'p8',
+        userName: 'Brian O.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Slightly bulky',
+        comment:
+          'The length makes some exercises awkward, but for 90% of my workout, they are perfect.',
+        reviewDate: new Date('2024-03-10'),
+      },
+    ],
+  },
+  {
+    id: 'p9',
+    name: 'Zenith Smart Watch',
+    description: 'Comprehensive health tracking with heart rate and sleep analysis.',
+    price: 199.0,
+    imageUrl: 'https://picsum.photos/id/48/800/450',
+    rating: 4.4,
+    reviewCount: 890,
+    inStock: true,
+    category: 'Fitness',
+    reviews: [
+      {
+        id: 'r9',
+        productId: 'p9',
+        userName: 'Drew H.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Great metrics',
+        comment: 'The sleep tracking is very accurate compared to my old device.',
+        reviewDate: new Date('2024-01-22'),
+      },
+      {
+        id: 'r21',
+        productId: 'p9',
+        userName: 'Mia San',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Elegant design',
+        comment: 'Actually looks like a real watch, not just a plastic fitness tracker.',
+        reviewDate: new Date('2024-02-05'),
+      },
+    ],
+  },
+  // CATEGORY: Outdoor
+  {
+    id: 'p10',
+    name: 'Alpine Camping Tent',
+    description: 'Ultralight 2-person tent with wind-resistant aerodynamic frame.',
+    price: 215.0,
+    imageUrl: 'https://picsum.photos/id/103/800/450',
+    rating: 4.8,
+    reviewCount: 560,
+    inStock: false,
+    category: 'Outdoor',
+    reviews: [
+      {
+        id: 'r10',
+        productId: 'p10',
+        userName: 'Skyler W.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Survived a storm',
+        comment: 'Kept us bone dry during a heavy downpour in the Rockies.',
+        reviewDate: new Date('2023-09-15'),
+      },
+      {
+        id: 'r22',
+        productId: 'p10',
+        userName: 'Fiona Kelly',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1548142813-c348350df52b?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'A bit snug',
+        comment: 'For two adults it’s a tight fit, but for solo backpacking, it’s a palace.',
+        reviewDate: new Date('2024-01-10'),
+      },
+    ],
+  },
+  {
+    id: 'p11',
+    name: 'Solar Power Bank',
+    description: 'High-capacity 20k mAh battery with integrated solar panels.',
+    price: 65.0,
+    imageUrl: 'https://picsum.photos/id/537/800/450',
+    rating: 4.6,
+    reviewCount: 230,
+    inStock: true,
+    category: 'Outdoor',
+    reviews: [
+      {
+        id: 'r11',
+        productId: 'p11',
+        userName: 'Robin S.',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=150&h=150&fit=crop',
+        rating: 4,
+        title: 'Slow solar, fast USB',
+        comment: 'Solar charging is more for emergencies, but via USB it is fast!',
+        reviewDate: new Date('2024-03-10'),
+      },
+      {
+        id: 'r23',
+        productId: 'p11',
+        userName: 'Greg Jensen',
+        userImageUrl:
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
+        rating: 5,
+        title: 'Rugged and reliable',
+        comment: 'Dropped it on a rock trail and it barely has a scratch. 100% recommend.',
+        reviewDate: new Date('2024-03-11'),
+      },
+    ],
+  },
+];
+
+export const CATEGORIES = ['all', ...PRODUCTS.map((p) => p.category)];

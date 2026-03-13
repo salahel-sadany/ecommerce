@@ -1,0 +1,31 @@
+@let vm = store.vm();
+
+<article appViewPanel>
+  <h2 class="text-2xl font-bold mb-4">Order Summary</h2>
+
+  <div class="space-y-2 pb-4">
+    <ng-content select="checkoutItems" />
+  </div>
+
+  <div class="text-lg space-y-3 pt-4 border-t" style="border-color: var(--mat-sys-outline-variant)">
+    <div class="flex justify-between">
+      <span>Subtotal</span>
+      <span> {{ vm.subtotal | currency }} </span>
+    </div>
+
+    <div class="flex justify-between">
+      <span>Tax</span>
+      <span> {{ vm.tax | currency }} </span>
+    </div>
+
+    <div
+      class="flex justify-between pt-3 font-bold border-t"
+      style="border-color: var(--mat-sys-outline-variant)"
+    >
+      <span>Total</span>
+      <span> {{ vm.total | currency }} </span>
+    </div>
+
+    <ng-content select="actionButton" />
+  </div>
+</article>

@@ -1,0 +1,69 @@
+@let vm = store.vm();
+
+<mat-toolbar
+  #header
+  class="w-full px-24! py-8! gap-4 elevated z-50 fixed"
+  [style.view-transition-name]="'header'"
+>
+  <button matIconButton (click)="ui.toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a routerLink="/">
+    <h1>Modern Store</h1>
+  </a>
+
+  <mat-form-field class="mx-auto basis-1/2 drop-shadow-md">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      (keyup.enter)="onSearch($event)"
+      type="search"
+      matInput
+      placeholder="Search Products..."
+    />
+  </mat-form-field>
+
+  <button
+    matIconButton
+    routerLink="/wishlist"
+    [matBadge]="vm.wishlistCount"
+    [matBadgeHidden]="vm.wishlistCount <= 0"
+  >
+    <mat-icon>favorite</mat-icon>
+  </button>
+
+  <button
+    matIconButton
+    routerLink="/cart"
+    [matBadge]="vm.cartItemsCount"
+    [matBadgeHidden]="vm.cartItemsCount <= 0"
+  >
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+
+  @if (auth.user(); as user) {
+    <button matIconButton [matMenuTriggerFor]="userMenu">
+      <img
+        class="rounded-full aspect-square object-cover object-center"
+        [src]="user.imageUrl"
+        [alt]="user.name"
+      />
+    </button>
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <div class="px-3 min-w-50">
+        <p class="text-sm font-bold">{{ user.name }}</p>
+        <p class="text-xs mat-text-on-secondary-container">{{ user.email }}</p>
+      </div>
+
+      <mat-divider />
+
+      <button class="min-h-8!" mat-menu-item (click)="auth.logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  } @else {
+    <button matButton="text" (click)="openSignInDialog()">Sign In</button>
+    <button matButton="filled" (click)="openSignUpDialog()">Sign Up</button>
+  }
+</mat-toolbar>

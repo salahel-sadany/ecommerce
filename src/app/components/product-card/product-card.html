@@ -1,0 +1,47 @@
+<article
+  class="mat-bg-surface rounded-xl overflow-hidden shadow-lg cursor-pointer grid grid-rows-subgrid row-span-6 gap-0 relative transition-translate duration-200 ease-out hover:-translate-y-1"
+>
+  <img
+    [src]="product().imageUrl"
+    [alt]="product().description"
+    [style.view-transition-name]="'product-image-' + product().id"
+    class="w-full h-80 object-cover object-center aspect-video rounded-t-xl"
+    [routerLink]="['/product', product().id]"
+  />
+
+  <button
+    matIconButton
+    [style.view-transition-name]="'wishlist-button-' + product().id"
+    class="absolute! end-3 top-3 z-20 mat-bg-surface transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
+    (click)="toggleWishlist()"
+  >
+    <ng-content select="toggle-wishlist-icon" />
+  </button>
+
+  <div
+    class="p-5 grid grid-rows-subgrid row-span-5 gap-4"
+    [style.view-transition-name]="'product-info-' + product().id"
+  >
+    <h3 class="text-lg font-semibold" [routerLink]="['/product', product().id]">
+      {{ product().name }}
+    </h3>
+
+    <p class="text-sm leading-relaxed mat-text-on-secondary-container">
+      {{ product().description }}
+    </p>
+
+    <app-star-rating [rating]="product().rating"> ({{ product().reviewCount }}) </app-star-rating>
+
+    <p class="text-sm font-medium" [class]="product().inStock ? 'text-green-500' : 'text-red-500'">
+      {{ product().inStock ? 'In Stock' : 'Out of Stock' }}
+    </p>
+
+    <div class="flex justify-between items-center">
+      <span class="text-2xl font-bold">{{ product().price | currency }}</span>
+      <button matButton="filled" class="flex gap-1.5" (click)="store.addToCart(product())">
+        <mat-icon>shopping_cart</mat-icon>
+        <p>Add to Cart</p>
+      </button>
+    </div>
+  </div>
+</article>
