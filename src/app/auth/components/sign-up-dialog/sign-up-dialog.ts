@@ -2,13 +2,17 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconButton, MatAnchor, MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogClose } from '@angular/material/dialog';
-import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { UserSignUp } from '../../../models/user.model';
 import { DialogRef } from '@angular/cdk/dialog';
 import { AuthStore } from '../../store/auth.store';
 import { SignInDialog } from '../sign-in-dialog/sign-in-dialog';
+import { passwordMatchValidator } from '../../../validators/sync.validators';
+import { AuthService } from '../../services/auth-service';
+
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -19,10 +23,11 @@ import { SignInDialog } from '../sign-in-dialog/sign-in-dialog';
     MatFormField,
     MatInput,
     MatPrefix,
-    MatSuffix,
+    // MatSuffix,
     MatAnchor,
     MatButton,
     ReactiveFormsModule,
+    MatError,
   ],
   templateUrl: './sign-up-dialog.html',
   styleUrl: './sign-up-dialog.scss',
@@ -34,17 +39,29 @@ export class SignUpDialog {
   private readonly dialogData = inject<{ checkout: boolean }>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(DialogRef);
 
-  protected readonly signUpForm = this.fb.group({
-    name: ['John Doe', [Validators.required]],
-    email: ['salah@test.com', [Validators.email, Validators.required]],
-    password: ['1234', Validators.required],
-    confirmPassword: ['1234', Validators.required],
-  });
-
   protected readonly passwordVisible = signal(false);
 
+  protected readonly signUpForm = this.fb.group(
+    {
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.email, Validators.required]],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(8), Validators.pattern(PASSWORD_REGEX)],
+      ],
+      confirmPassword: ['', Validators.required],
+    },
+    {
+      validators: passwordMatchValidator,
+    },
+  );
+
   protected signUp() {
-    if (!this.signUpForm.valid) return;
+    if (!this.signUpForm.valid) {
+      this.signUpForm.markAllAsTouched();
+
+      return;
+    }
 
     const { name, email, password } = this.signUpForm.value;
 

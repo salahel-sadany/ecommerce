@@ -5,12 +5,12 @@ export interface User {
   readonly imageUrl: string;
 }
 
-export type UserSignIn = Pick<User, 'email'> & {
+export interface UserSignUp {
+  readonly name: string;
+  readonly email: string;
   readonly password: string;
   readonly checkout?: boolean;
   readonly dialogId: string;
-};
-
-export interface UserSignUp extends UserSignIn {
-  readonly name: string;
 }
+
+export type UserSignIn = Omit<UserSignUp, 'name'>;

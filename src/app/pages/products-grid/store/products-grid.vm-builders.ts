@@ -13,8 +13,8 @@ export function createProductsGridVm(
   return { categories, selectedCategory, filteredProducts, filteredProductsCount };
 
   function createFilteredProducts() {
-    const filteredProducts = products.filter((p) =>
-      selectedCategory === 'all' ? products : p.category.toLowerCase() === selectedCategory,
+    const filteredProducts = products.filter(
+      (p) => selectedCategory === 'all' || p.category.toLowerCase() === selectedCategory,
     );
 
     const searchedFilteredProducts = filteredProducts.filter((p) =>
