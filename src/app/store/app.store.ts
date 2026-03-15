@@ -7,7 +7,15 @@ import {
   withState,
 } from '@ngrx/signals';
 import { initialAppSlice } from './app.slice';
-import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
+import {
+  setError,
+  setLoaded,
+  setLoading,
+  updateState,
+  withCallState,
+  withDevtools,
+  withStorageSync,
+} from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import {
   addEntities,
@@ -29,17 +37,24 @@ import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
 import { AuthStore } from '../auth/store/auth.store';
 import { Router } from '@angular/router';
 import { Order } from '../models/order.model';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
+import { ProductsService } from '../services/products-service';
+import { tapResponse } from '@ngrx/operators';
 
 export const AppStore = signalStore(
   {
     providedIn: 'root',
   },
+  withCallState({ collections: ['products', 'cart', 'wishlist'] }),
+
   withState(initialAppSlice),
   withProps((store) => ({
     _toast: inject(HotToastService),
     _dialog: inject(MatDialog),
     _auth: inject(AuthStore),
     _router: inject(Router),
+    _productsService: inject(ProductsService),
 
     _clearWishlist: () => updateState(store, 'Wishlist Cleard', removeAllEntities(wishlistConfig)),
     _addToWishlist: (product: Product) =>
@@ -63,6 +78,22 @@ export const AppStore = signalStore(
     vm: computed(() => createAppVm(store.wishlistEntities(), store.cartItemsEntities())),
   })),
   withMethods((store) => ({
+    loadProducts: rxMethod<void>(
+      pipe(
+        tap(() => updateState(store, 'Products loading set', setLoading('products'))),
+        switchMap(() =>
+          store._productsService.getProducts().pipe(
+            tapResponse({
+              next: (products) =>
+                updateState(store, 'Products Loaded', setAllEntities(products, productsConfig)),
+              error: (err) =>
+                updateState(store, 'Error loading products', setError(err, 'products')),
+              finalize: () => updateState(store, 'Products loading reset', setLoaded('products')),
+            }),
+          ),
+        ),
+      ),
+    ),
     addToWishlist: (product: Product) => {
       store._addToWishlist(product);
       store._toast.success('Product is added to wishlist');
@@ -150,7 +181,7 @@ export const AppStore = signalStore(
   })),
 
   withHooks((store) => ({
-    onInit: () => updateState(store, 'Products Set', setAllEntities(PRODUCTS, productsConfig)),
+    onInit: () => store.loadProducts(),
   })),
   withDevtools('app-store'),
 );

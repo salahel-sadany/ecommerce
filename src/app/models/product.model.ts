@@ -10,5 +10,4 @@ export interface Product {
   readonly reviewCount: number;
   readonly inStock: boolean;
   readonly category: string;
-  readonly reviews: UserReview[];
 }

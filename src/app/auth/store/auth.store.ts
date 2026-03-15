@@ -56,7 +56,9 @@ export const AuthStore = signalStore(
               },
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
-                store._toast.error('Sign in failed ' + err.message);
+                store._toast.error(
+                  'Sign in failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
+                );
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
             }),
@@ -79,7 +81,9 @@ export const AuthStore = signalStore(
               },
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
-                store._toast.error('Sign up failed ' + err.message);
+                store._toast.error(
+                  'Sign up failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
+                );
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
             }),
@@ -97,7 +101,9 @@ export const AuthStore = signalStore(
               next: () => console.log('logged out'),
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
-                store._toast.error('Logout failed ' + err.message);
+                store._toast.error(
+                  'Logout failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
+                );
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
             }),

@@ -3,11 +3,11 @@ import { ProductDetailsStore } from './store/product-details.store';
 import { BackButton } from '../../components/back-button/back-button';
 import { ProductInfo } from './components/product-info/product-info';
 import { StockStatus } from './components/stock-status/stock-status';
-import { ProductReviews } from './components/product-reviews/product-reviews';
+// import { ProductReviews } from './components/product-reviews/product-reviews';
 
 @Component({
   selector: 'app-product-details',
-  imports: [BackButton, ProductInfo, ProductReviews],
+  imports: [BackButton, ProductInfo],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })

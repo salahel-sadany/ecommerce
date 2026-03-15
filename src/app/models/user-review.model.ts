@@ -1,6 +1,6 @@
 export interface UserReview {
   readonly id: string;
-  readonly productId: string;
+  readonly userId: string;
   readonly userName: string;
   readonly userImageUrl: string;
   readonly rating: number;
