@@ -5,5 +5,5 @@ export interface Order {
   readonly userId: string;
   readonly total: number;
   readonly items: CartItem[];
-  paymentStatus: 'success' | 'failure';
+  readonly paymentStatus: 'success' | 'failure';
 }
