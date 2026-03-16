@@ -6,35 +6,57 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-  User,
+  User as FirebaseUser,
   UserCredential,
 } from '@angular/fire/auth';
-import { from, Observable, switchMap } from 'rxjs';
+import {
+  addDoc,
+  collection,
+  doc,
+  DocumentData,
+  DocumentReference,
+  Firestore,
+  setDoc,
+} from '@angular/fire/firestore';
+import { from, map, Observable, switchMap } from 'rxjs';
+import { User } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly auth = inject(Auth);
+  private readonly db = inject(Firestore);
 
-  signUp(email: string, password: string, name: string, imageUrl: string): Observable<void> {
+  signUp(email: string, password: string, name: string, imageUrl: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((cred) =>
-        updateProfile(cred.user, {
-          displayName: name,
-          photoURL: imageUrl,
-        }),
+      switchMap(({ user }) =>
+        this.updateNameAndImage(user, name, imageUrl).pipe(
+          map(() => ({
+            email: user.email || '',
+            id: user.uid,
+            imageUrl: user.photoURL || '',
+            name: user.displayName || '',
+          })),
+        ),
       ),
     );
   }
 
-  updateNameAndImage(user: User, name: string, imageUrl: string): Observable<void> {
+  updateNameAndImage(user: FirebaseUser, name: string, imageUrl: string): Observable<void> {
     return from(
       updateProfile(user, {
         displayName: name,
         photoURL: imageUrl,
       }),
     );
+  }
+
+  persistNewUser(user: User): Observable<void> {
+    const { id, ...userData } = user;
+    const docRef = doc(this.db, `users/${id}`);
+
+    return from(setDoc(docRef, userData));
   }
 
   signIn(email: string, password: string): Observable<UserCredential> {
@@ -45,7 +67,7 @@ export class AuthService {
     return from(signOut(this.auth));
   }
 
-  getCurrentUser(): Observable<User | null> {
+  getCurrentUser(): Observable<FirebaseUser | null> {
     return authState(this.auth);
   }
 }

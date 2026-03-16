@@ -17,16 +17,17 @@ import {
   withCallState,
   withDevtools,
 } from '@angular-architects/ngrx-toolkit';
-import { UserSignIn, UserSignUp } from '../../models/user.model';
+import { User, UserSignIn, UserSignUp } from '../../models/user.model';
 import { computed, inject } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../services/auth-service';
 import { AuthAdapter } from '../adapters/auth.adpter';
-import { exhaustMap, pipe, tap } from 'rxjs';
+import { concatMap, exhaustMap, pipe, switchMap, tap } from 'rxjs';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthError } from '@angular/fire/auth';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
@@ -36,10 +37,12 @@ export const AuthStore = signalStore(
     _router: inject(Router),
     _authService: inject(AuthService),
     _toast: inject(HotToastService),
+    _db: inject(Firestore),
   })),
   withCallState(),
   withComputed((store) => ({
     isLoggedIn: computed(() => !!store.user()),
+    userId: computed(() => store.user()?.id),
   })),
   withMethods((store) => ({
     signIn: rxMethod<UserSignIn>(
@@ -57,7 +60,7 @@ export const AuthStore = signalStore(
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
                 store._toast.error(
-                  'Sign in failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
+                  'Sign in failed: ' + err.code.split('/')[1].replaceAll('-', ' '),
                 );
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
@@ -72,6 +75,7 @@ export const AuthStore = signalStore(
         tap(() => updateState(store, 'loading set', setLoading())),
         exhaustMap((data) =>
           store._authService.signUp(data.email, data.password, data.name, '').pipe(
+            switchMap((user) => store._authService.persistNewUser(user)),
             tapResponse({
               next: () => {
                 store._toast.success('Signed Up succefully');
@@ -82,7 +86,7 @@ export const AuthStore = signalStore(
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
                 store._toast.error(
-                  'Sign up failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
+                  'Sign up failed: ' + err.code.split('/')[1].replaceAll('-', ' '),
                 );
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
@@ -101,9 +105,7 @@ export const AuthStore = signalStore(
               next: () => console.log('logged out'),
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
-                store._toast.error(
-                  'Logout failed: ' + err.code.split('/').slice(1).toString().split('-').join(' '),
-                );
+                store._toast.error('Logout failed: ' + err.code.split('/')[1].replaceAll('-', ' '));
               },
               finalize: () => updateState(store, 'Loading reset', setLoaded()),
             }),

@@ -1,5 +1,3 @@
-import { UserReview } from './user-review.model';
-
 export interface Product {
   readonly id: string;
   readonly name: string;

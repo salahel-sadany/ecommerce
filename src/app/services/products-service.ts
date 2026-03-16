@@ -7,10 +7,10 @@ import { Product } from '../models/product.model';
   providedIn: 'root',
 })
 export class ProductsService {
-  private readonly firestore = inject(Firestore);
+  private readonly db = inject(Firestore);
 
   getProducts(): Observable<Product[]> {
-    const collectionRef = collection(this.firestore, 'products');
+    const collectionRef = collection(this.db, 'products');
     return collectionData(collectionRef, { idField: 'id' }) as Observable<Product[]>;
   }
 }

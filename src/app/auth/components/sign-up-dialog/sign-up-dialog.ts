@@ -10,7 +10,6 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { AuthStore } from '../../store/auth.store';
 import { SignInDialog } from '../sign-in-dialog/sign-in-dialog';
 import { passwordMatchValidator } from '../../../validators/sync.validators';
-import { AuthService } from '../../services/auth-service';
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
