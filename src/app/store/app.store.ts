@@ -31,7 +31,7 @@ import { Product } from '../models/product.model';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { createAppVm } from './app.vm-builders';
 import { cartConfig, productsConfig, wishlistConfig } from './entity.config';
-import { CartItem } from '../models/cartItem.model';
+import { AddToCartInput, CartItem, setCartItemQuantityInput } from '../models/cartItem.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
 import { AuthStore } from '../auth/store/auth.store';
@@ -42,6 +42,7 @@ import { EMPTY, exhaustMap, filter, pipe, switchMap, take, tap } from 'rxjs';
 import { ProductsService } from '../services/products-service';
 import { tapResponse } from '@ngrx/operators';
 import { WishlistService } from '../services/wishlist-service';
+import { CartService } from '../services/cart-service';
 
 export const AppStore = signalStore(
   {
@@ -56,6 +57,7 @@ export const AppStore = signalStore(
     _router: inject(Router),
     _productsService: inject(ProductsService),
     _wishlistService: inject(WishlistService),
+    _cartService: inject(CartService),
   })),
   withProps((store) => ({
     _clearWishlist: rxMethod<void>(
@@ -109,8 +111,30 @@ export const AppStore = signalStore(
         }),
       ),
     ),
-    _removeCartItem: (itemId: string) =>
-      updateState(store, 'Cart Item is removed', removeEntity(itemId, cartConfig)),
+    _removeCartItem: rxMethod<string>(
+      pipe(
+        tap((_) => updateState(store, 'loading remove cart item set', setLoading('cart'))),
+        exhaustMap((itemId) => {
+          const userId = store._auth.userId();
+          if (!userId) return EMPTY;
+
+          return store._cartService.removeCartItem(userId, itemId).pipe(
+            tapResponse({
+              next: () => {
+                updateState(store, 'Product Removed From cart');
+                store._toast.success('Product is removed from cart');
+              },
+              error: (err) => {
+                updateState(store, 'Product Removed From cart', setError(err, 'cart'));
+                store._toast.error('Product is removed from cart');
+              },
+              finalize: () =>
+                updateState(store, 'Loading remove from cart reset', setLoaded('cart')),
+            }),
+          );
+        }),
+      ),
+    ),
   })),
   withEntities(productsConfig),
   withEntities(wishlistConfig),
@@ -158,6 +182,26 @@ export const AppStore = signalStore(
       ),
     ),
 
+    loadCartItems: rxMethod<void>(
+      pipe(
+        tap(() => updateState(store, 'Cart loading set', setLoading('cart'))),
+        exhaustMap(() => {
+          const userId = store._auth.userId();
+
+          if (!userId) return EMPTY;
+
+          return store._cartService.getCartItems(userId).pipe(
+            tapResponse({
+              next: (cartItems) =>
+                updateState(store, 'Cart Loaded', setAllEntities(cartItems, cartConfig)),
+              error: (err) => updateState(store, 'Error loading Cart', setError(err, 'cart')),
+              finalize: () => updateState(store, 'Cart loading reset', setLoaded('cart')),
+            }),
+          );
+        }),
+      ),
+    ),
+
     addToWishlist: (product: Product) => {
       store._addToWishlist(product);
     },
@@ -191,47 +235,69 @@ export const AppStore = signalStore(
     ),
     isInWishlist: (product: Product) => store.wishlistIds().includes(product.id),
     clearWishlist: store._clearWishlist,
-    addToCart: (product: Product, quantity = 1) => {
-      const isInCart = store.cartItemsIds().includes(product.id);
-      if (isInCart) {
-        updateState(
-          store,
-          'Cart Item is Incremented',
-          updateEntity(
-            { id: product.id, changes: (item) => ({ quantity: item.quantity + quantity }) },
-            cartConfig,
-          ),
-        );
-        store._toast.success('Product is added to Cart again');
-      } else {
-        updateState(
-          store,
-          'Product is Added To Cart',
-          addEntity({ ...product, quantity }, cartConfig),
-        );
-        store._toast.success('Product is added to Cart');
-      }
-    },
-    addAllWishlistToCart: () => {
-      const newCartItems = store.wishlistEntities().map((item) => ({ ...item, quantity: 1 }));
+    addToCart: rxMethod<AddToCartInput>(
+      pipe(
+        tap((_) => updateState(store, 'Loading add to cart set', setLoading('cart'))),
+        exhaustMap(({ product, quantity = 1 }) => {
+          const userId = store._auth.userId();
+          if (!userId) {
+            // store._toast.error('You must be logged in to add to cart');
+            store._dialog.open(SignInDialog, {
+              disableClose: true,
+            });
+            return EMPTY;
+          }
+          return store._cartService.addToCart(userId, product, quantity).pipe(
+            tapResponse({
+              next: () => store._toast.success('Product is added to cart'),
+              error: (err) => updateState(store, 'Error adding cart item', setError(err, 'cart')),
+              finalize: () => updateState(store, 'loading add to cart reset', setLoaded('cart')),
+            }),
+          );
+        }),
+      ),
+    ),
+    addAllWishlistToCart: rxMethod<void>(
+      pipe(
+        tap((_) => updateState(store, 'Loading add all to cart set', setLoading('cart'))),
+        exhaustMap((_) => {
+          const wishlist = store.wishlistEntities();
+          const userId = store._auth.userId();
+          if (!userId) return EMPTY;
 
-      updateState(store, 'All wishlist items added to cart', addEntities(newCartItems, cartConfig));
+          return store._cartService.addAllWishlistToCart(userId, wishlist).pipe(
+            tapResponse({
+              next: () => updateState(store, 'All wishlistItems added to cart'),
+              error: (err) =>
+                updateState(store, 'Error adding all wishlistItems to cart', setError(err, 'cart')),
+              finalize: () =>
+                updateState(
+                  store,
+                  'Loading adding all wishlistItems to cart reset',
+                  setLoaded('cart'),
+                ),
+            }),
+          );
+        }),
+      ),
+    ),
 
-      store._clearWishlist();
-    },
-    setCartItemQuantity: (itemId: string, quantity: number) => {
-      updateState(
-        store,
-        'Cart item quantity set',
-        updateEntity({ id: itemId, changes: { quantity } }, cartConfig),
-      );
-    },
+    setCartItemQuantity: rxMethod<setCartItemQuantityInput>(
+      pipe(
+        switchMap(({ productId, quantity }) => {
+          const userId = store._auth.userId();
+          if (!userId) return EMPTY;
+
+          return store._cartService.setCartItemQuantity(userId, productId, quantity);
+        }),
+      ),
+    ),
     removeCartItem: store._removeCartItem,
     addCartItemToWishlist: (item: CartItem) => {
       const { quantity, ...product } = item;
 
-      store._addToWishlist(product);
-      store._removeCartItem(item.id);
+      // store._addToWishlist(product);
+      // store._removeCartItem(item.id);
     },
     proceedToCheckout: () => {
       if (store._auth.user()) {
@@ -275,7 +341,10 @@ export const AppStore = signalStore(
           filter((user) => !!user),
           take(1),
         )
-        .subscribe((user) => store.loadWishlist());
+        .subscribe((user) => {
+          store.loadWishlist();
+          store.loadCartItems();
+        });
     },
   })),
   withDevtools('app-store'),

@@ -16,7 +16,7 @@
       <div class="lg:col-span-2">
         <app-order-summary>
           <ng-container ngProjectAs="checkoutItems">
-            @for (item of vm.cartItems; track item.id) {
+            @for (item of vm.cartItems; track item.productId) {
               <p class="text-sm flex justify-between">
                 <span>{{ item.name }} x {{ item.quantity }} </span>
                 <span>{{ item.totalPrice | currency }}</span>

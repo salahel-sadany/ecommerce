@@ -18,5 +18,5 @@ export const wishlistConfig = entityConfig({
 export const cartConfig = entityConfig({
   entity: type<CartItem>(),
   collection: 'cartItems',
-  selectId: (item) => item.id,
+  selectId: (item) => item.productId,
 });

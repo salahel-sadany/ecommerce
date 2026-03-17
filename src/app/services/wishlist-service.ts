@@ -7,8 +7,9 @@ import {
   Firestore,
   getDocs,
   setDoc,
+  writeBatch,
 } from '@angular/fire/firestore';
-import { from, mergeMap, Observable, forkJoin } from 'rxjs';
+import { from, mergeMap, Observable, forkJoin, switchMap } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
@@ -36,11 +37,12 @@ export class WishlistService {
   clearWishlist(uid: string) {
     const collectionRef = collection(this.db, `users/${uid}/wishlist`);
     return from(getDocs(collectionRef)).pipe(
-      mergeMap((snapshot) => {
-        const deletions = snapshot.docs.map((docSnap) =>
-          from(deleteDoc(doc(this.db, `users/${uid}/wishlist/${docSnap.id}`))),
-        );
-        return deletions.length ? forkJoin(deletions) : from([]);
+      switchMap((snapshot) => {
+        const batch = writeBatch(this.db);
+
+        snapshot.docs.map((docSnap) => batch.delete(docSnap.ref));
+
+        return from(batch.commit());
       }),
     );
   }
