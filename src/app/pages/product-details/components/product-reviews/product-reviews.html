@@ -8,14 +8,14 @@
   </div>
 
   @if (isReviewFormOpen()) {
-    <app-review-form (reviewFormClosed)="isReviewFormOpen.set(false)" />
+    <app-review-form [productId]="product().id" (reviewFormClosed)="isReviewFormOpen.set(false)" />
   }
   <article
     class="mat-bg-surface-container-low rounded-lg grid lg:grid-cols-2 gap-4 items-center mt-8 p-4"
   >
     <div class="flex flex-col items-center gap-4">
-      <p class="text-4xl font-bold">{{ product().rating }}</p>
-      <app-star-rating [rating]="product().rating" />
+      <p class="text-4xl font-bold">{{ avgRating() | number: '1.0-1' }}</p>
+      <app-star-rating [rating]="avgRating()" />
       <p class="mat-text-on-secondary-container text-base">
         {{ 'Based on ' + reviews().length + ' reviews' }}
       </p>

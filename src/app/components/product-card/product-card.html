@@ -30,7 +30,9 @@
       {{ product().description }}
     </p>
 
-    <app-star-rating [rating]="product().rating"> ({{ product().reviewCount }}) </app-star-rating>
+    <app-star-rating [rating]="product().ratingPoints / product().reviewCount">
+      ({{ product().reviewCount }})
+    </app-star-rating>
 
     <p class="text-sm font-medium" [class]="product().inStock ? 'text-green-500' : 'text-red-500'">
       {{ product().inStock ? 'In Stock' : 'Out of Stock' }}

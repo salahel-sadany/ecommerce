@@ -49,7 +49,7 @@ export class CartService {
       category,
       description,
       inStock,
-      rating,
+      ratingPoints,
       reviewCount,
       ...cartItem
     } = product;
@@ -97,7 +97,7 @@ export class CartService {
 
   addCartItemToWishlist(uid: string, product: Product): Observable<void> {
     return this.wishlistService
-      .addToWishlist(uid, product)
+      .addToWishlist(uid, product.id)
       .pipe(concatMap((_) => this.removeCartItem(uid, product.id)));
   }
 

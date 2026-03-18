@@ -4,8 +4,8 @@
 
 <h1 class="text-2xl font-extrabold mb-5">{{ product().name }}</h1>
 
-<app-star-rating [rating]="product().rating"
-  >{{ `${product().rating} (${product().reviewCount} reviews)` }}
+<app-star-rating [rating]="avgRating()"
+  >{{ `${(avgRating() | number: '1.0-1')} (${product().reviewCount} reviews)` }}
 </app-star-rating>
 
 <p class="text-3xl font-extrabold my-5">{{ product().price | currency }}</p>

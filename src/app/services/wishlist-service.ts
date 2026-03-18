@@ -6,27 +6,37 @@ import {
   doc,
   Firestore,
   getDocs,
+  serverTimestamp,
   setDoc,
   writeBatch,
 } from '@angular/fire/firestore';
-import { from, mergeMap, Observable, forkJoin, switchMap } from 'rxjs';
+import { from, mergeMap, Observable, forkJoin, switchMap, EMPTY, combineLatest, of } from 'rxjs';
 import { Product } from '../models/product.model';
+import { ProductsService } from './products-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WishlistService {
   private readonly db = inject(Firestore);
+  private readonly prouctsService = inject(ProductsService);
 
   getWishlist(uid: string): Observable<Product[]> {
     const collectionRef = collection(this.db, `users/${uid}/wishlist`);
-    return collectionData(collectionRef, { idField: 'id' }) as Observable<Product[]>;
+    return collectionData(collectionRef, { idField: 'productId' }).pipe(
+      switchMap((wishlistItems) => {
+        if (wishlistItems.length === 0) return of([]);
+
+        const products$ = wishlistItems.map((i) => this.prouctsService.getProductById(i.productId));
+
+        return combineLatest(products$);
+      }),
+    );
   }
 
-  addToWishlist(uid: string, product: Product): Observable<void> {
-    const { id, ...productRest } = product;
-    const docRef = doc(this.db, `users/${uid}/wishlist/${id}`);
-    return from(setDoc(docRef, productRest));
+  addToWishlist(uid: string, productId: string): Observable<void> {
+    const docRef = doc(this.db, `users/${uid}/wishlist/${productId}`);
+    return from(setDoc(docRef, { productId, createdAt: serverTimestamp() }));
   }
 
   removeFromWishlist(uid: string, productId: string): Observable<void> {
