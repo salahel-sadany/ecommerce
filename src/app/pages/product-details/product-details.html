@@ -1,7 +1,7 @@
 @let vm = store.vm();
 
-<section class="p-22">
-  <div class="wrapper">
+<section class="py-24">
+  <div class="wrapper lg:px-24">
     <app-back-button label="Back To Products" navigateTo="/products/all" />
 
     @if (vm.product; as product) {
@@ -10,7 +10,7 @@
           [style.view-transition-name]="'product-image-' + product.id"
           [src]="product.imageUrl"
           [alt]="product.description"
-          class="w-125 h-137.5 object-cover object-center aspect-square rounded-lg"
+          class="w-125 h-137.5 object-cover object-center aspect-square rounded-lg mx-auto"
         />
 
         <div class="flex-1">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <!-- <app-product-reviews [product]="vm.product" /> -->
+      <app-product-reviews [product]="vm.product" />
     } @else {
       <p>there is no such product</p>
     }

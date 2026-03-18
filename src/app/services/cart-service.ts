@@ -9,7 +9,9 @@ import {
   getDoc,
   getDocs,
   increment,
+  serverTimestamp,
   setDoc,
+  Timestamp,
   updateDoc,
   writeBatch,
 } from '@angular/fire/firestore';
@@ -27,6 +29,7 @@ import {
 import { CartItem } from '../models/cartItem.model';
 import { Product } from '../models/product.model';
 import { WishlistService } from './wishlist-service';
+import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -92,6 +95,12 @@ export class CartService {
     );
   }
 
+  addCartItemToWishlist(uid: string, product: Product): Observable<void> {
+    return this.wishlistService
+      .addToWishlist(uid, product)
+      .pipe(concatMap((_) => this.removeCartItem(uid, product.id)));
+  }
+
   setCartItemQuantity(uid: string, productId: string, quantity: number) {
     const docRef = doc(this.db, `users/${uid}/cart/${productId}`);
     return updateDoc(docRef, { quantity });
@@ -100,5 +109,21 @@ export class CartService {
   removeCartItem(uid: string, productId: string): Observable<void> {
     const docRef = doc(this.db, `users/${uid}/cart/${productId}`);
     return from(deleteDoc(docRef));
+  }
+
+  clearCart(uid: string) {
+    const collectionRef = collection(this.db, `users/${uid}/cart`);
+
+    return from(getDocs(collectionRef)).pipe(
+      switchMap((snapshot) => {
+        if (snapshot.empty) return EMPTY;
+
+        const batch = writeBatch(this.db);
+
+        snapshot.docs.forEach((doc) => batch.delete(doc.ref));
+
+        return from(batch.commit());
+      }),
+    );
   }
 }

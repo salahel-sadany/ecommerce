@@ -1,0 +1,32 @@
+<article appViewPanel>
+  <h3 class="text-xl font-bold mb-6">Write a review</h3>
+
+  <form [formGroup]="reviewForm" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <mat-form-field>
+      <input formControlName="reviewTitle" type="text" matInput placeholder="Review title*" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="rate">
+        @for (option of selectRateOptions(); track $index) {
+          <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="lg:col-span-2">
+      <textarea
+        formControlName="review"
+        type="text"
+        matInput
+        placeholder="Review*"
+        rows="4"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="space-x-4">
+      <button matButton="filled">Submit review</button>
+      <button matButton="outlined" (click)="reviewFormClosed.emit()">Cancel</button>
+    </div>
+  </form>
+</article>

@@ -30,19 +30,26 @@ import {
 import { Product } from '../models/product.model';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { createAppVm } from './app.vm-builders';
-import { cartConfig, productsConfig, wishlistConfig } from './entity.config';
+import {
+  cartConfig,
+  ordersConfig,
+  productsConfig,
+  reviewsConfig,
+  wishlistConfig,
+} from './entity.config';
 import { AddToCartInput, CartItem, setCartItemQuantityInput } from '../models/cartItem.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
 import { AuthStore } from '../auth/store/auth.store';
 import { Router } from '@angular/router';
-import { Order } from '../models/order.model';
+import { Order, PlaceOrderInput } from '../models/order.model';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, exhaustMap, filter, pipe, switchMap, take, tap } from 'rxjs';
 import { ProductsService } from '../services/products-service';
 import { tapResponse } from '@ngrx/operators';
 import { WishlistService } from '../services/wishlist-service';
 import { CartService } from '../services/cart-service';
+import { OrdersService } from '../services/orders-service';
 
 export const AppStore = signalStore(
   {
@@ -58,6 +65,7 @@ export const AppStore = signalStore(
     _productsService: inject(ProductsService),
     _wishlistService: inject(WishlistService),
     _cartService: inject(CartService),
+    _ordersService: inject(OrdersService),
   })),
   withProps((store) => ({
     _clearWishlist: rxMethod<void>(
@@ -139,7 +147,9 @@ export const AppStore = signalStore(
   withEntities(productsConfig),
   withEntities(wishlistConfig),
   withEntities(cartConfig),
-  withCallState({ collections: ['products', 'cart', 'wishlist'] }),
+  withEntities(ordersConfig),
+  withEntities(reviewsConfig),
+  withCallState({ collections: ['products', 'cart', 'wishlist', 'orders'] }),
   withComputed((store) => ({
     vm: computed(() => createAppVm(store.wishlistEntities(), store.cartItemsEntities())),
   })),
@@ -151,10 +161,20 @@ export const AppStore = signalStore(
           store._productsService.getProducts().pipe(
             tapResponse({
               next: (products) =>
-                updateState(store, 'Products Loaded', setAllEntities(products, productsConfig)),
+                updateState(
+                  store,
+                  'Products Loaded',
+                  setAllEntities(products, productsConfig),
+                  setLoaded('products'),
+                ),
               error: (err) =>
-                updateState(store, 'Error loading products', setError(err, 'products')),
-              finalize: () => updateState(store, 'Products loading reset', setLoaded('products')),
+                updateState(
+                  store,
+                  'Error loading products',
+                  setError(err, 'products'),
+                  setLoaded('products'),
+                ),
+              finalize: () => updateState(store, 'cleanup products', setLoaded('products')),
             }),
           ),
         ),
@@ -172,9 +192,19 @@ export const AppStore = signalStore(
           return store._wishlistService.getWishlist(userId).pipe(
             tapResponse({
               next: (products) =>
-                updateState(store, 'Wishlist Loaded', setAllEntities(products, wishlistConfig)),
+                updateState(
+                  store,
+                  'Wishlist Loaded',
+                  setAllEntities(products, wishlistConfig),
+                  setLoaded('products'),
+                ),
               error: (err) =>
-                updateState(store, 'Error loading wishlist', setError(err, 'wishlist')),
+                updateState(
+                  store,
+                  'Error loading wishlist',
+                  setError(err, 'wishlist'),
+                  setLoaded('products'),
+                ),
               finalize: () => updateState(store, 'wishlist loading reset', setLoaded('wishlist')),
             }),
           );
@@ -193,9 +223,50 @@ export const AppStore = signalStore(
           return store._cartService.getCartItems(userId).pipe(
             tapResponse({
               next: (cartItems) =>
-                updateState(store, 'Cart Loaded', setAllEntities(cartItems, cartConfig)),
-              error: (err) => updateState(store, 'Error loading Cart', setError(err, 'cart')),
+                updateState(
+                  store,
+                  'Cart Loaded',
+                  setAllEntities(cartItems, cartConfig),
+                  setLoaded('products'),
+                ),
+              error: (err) =>
+                updateState(
+                  store,
+                  'Error loading Cart',
+                  setError(err, 'cart'),
+                  setLoaded('products'),
+                ),
               finalize: () => updateState(store, 'Cart loading reset', setLoaded('cart')),
+            }),
+          );
+        }),
+      ),
+    ),
+    loadOrders: rxMethod<void>(
+      pipe(
+        tap(() => updateState(store, 'Orders loading set', setLoading('orders'))),
+        exhaustMap(() => {
+          const userId = store._auth.userId();
+
+          if (!userId) return EMPTY;
+
+          return store._ordersService.getOrders(userId).pipe(
+            tapResponse({
+              next: (orders) =>
+                updateState(
+                  store,
+                  'Orders Loaded',
+                  setAllEntities(orders, ordersConfig),
+                  setLoaded('products'),
+                ),
+              error: (err) =>
+                updateState(
+                  store,
+                  'Error loading orders',
+                  setError(err, 'orders'),
+                  setLoaded('products'),
+                ),
+              finalize: () => updateState(store, 'Orders loading reset', setLoaded('orders')),
             }),
           );
         }),
@@ -293,14 +364,29 @@ export const AppStore = signalStore(
       ),
     ),
     removeCartItem: store._removeCartItem,
-    addCartItemToWishlist: (item: CartItem) => {
-      const { quantity, ...product } = item;
+    addCartItemToWishlist: rxMethod<CartItem>(
+      pipe(
+        tap((_) => updateState(store, 'Loading add cartItem to wishlist set', setLoading('cart'))),
+        exhaustMap((item) => {
+          const userId = store._auth.userId();
+          const product = store.productsEntities().find((p) => p.id === item.productId);
 
-      // store._addToWishlist(product);
-      // store._removeCartItem(item.id);
-    },
+          if (!userId || !product) return EMPTY;
+
+          return store._cartService.addCartItemToWishlist(userId, product).pipe(
+            tapResponse({
+              next: () => updateState(store, 'cartItem is added to wishlist'),
+              error: (err) =>
+                updateState(store, 'Error adding cartItem to wishlist', setError(err, 'cart')),
+              finalize: () =>
+                updateState(store, 'Loading adding cartItem to wishlist reset', setLoaded('cart')),
+            }),
+          );
+        }),
+      ),
+    ),
     proceedToCheckout: () => {
-      if (store._auth.user()) {
+      if (store._auth.isLoggedIn()) {
         store._router.navigate(['checkout']);
         return;
       }
@@ -312,25 +398,31 @@ export const AppStore = signalStore(
         },
       });
     },
-    placeOrder: () => {
-      const user = store._auth.user();
+    placeOrder: rxMethod<string | undefined>(
+      pipe(
+        tap((_) => updateState(store, 'Loading place orders set', setLoading('orders'))),
+        exhaustMap((shippingAddress) => {
+          const userId = store._auth.userId();
+          if (!userId) {
+            store._toast.error('Please login to place an order');
+            return EMPTY;
+          }
 
-      if (!user) {
-        store._toast.error('Please login to place an order');
-        return;
-      }
+          const cartItems = store.cartItemsEntities();
 
-      const order: Order = {
-        id: crypto.randomUUID(),
-        userId: user?.id || '',
-        total: store.cartItemsEntities().reduce((tot, item) => tot + item.quantity * item.price, 0),
-        items: store.cartItemsEntities(),
-        paymentStatus: 'success',
-      };
-
-      updateState(store, 'Order is placed successfully', removeAllEntities(cartConfig));
-      store._router.navigate(['order-success']);
-    },
+          return store._ordersService.placeOrder(userId, cartItems, shippingAddress).pipe(
+            tapResponse({
+              next: () => {
+                updateState(store, 'Order is placed');
+                store._router.navigate(['order-success']);
+              },
+              error: (err) => updateState(store, 'Error placing an order', setError(err, 'orders')),
+              finalize: () => updateState(store, 'Loading place order reset', setLoaded('orders')),
+            }),
+          );
+        }),
+      ),
+    ),
   })),
 
   withHooks((store) => ({
@@ -344,6 +436,7 @@ export const AppStore = signalStore(
         .subscribe((user) => {
           store.loadWishlist();
           store.loadCartItems();
+          store.loadOrders();
         });
     },
   })),

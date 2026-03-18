@@ -6,7 +6,7 @@ import { MatInput } from '@angular/material/input';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatBadge } from '@angular/material/badge';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { Router, RouterLink } from '@angular/router';
+import { isActive, Router, RouterLink } from '@angular/router';
 import { AppStore } from '../../store/app.store';
 import { AuthStore } from '../../auth/store/auth.store';
 import { MatDivider } from '@angular/material/divider';
@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignUpDialog } from '../../auth/components/sign-up-dialog/sign-up-dialog';
 import { SignInDialog } from '../../auth/components/sign-in-dialog/sign-in-dialog';
 import { UIStore } from '../../store/ui.store';
+import { ThemeService } from '../../services/theme-service';
 
 @Component({
   selector: 'app-header',
@@ -43,9 +44,18 @@ export class Header {
 
   protected readonly dialog = inject(MatDialog);
 
+  protected readonly theme = inject(ThemeService);
+
   protected readonly store = inject(AppStore);
   protected readonly ui = inject(UIStore);
   protected readonly auth = inject(AuthStore);
+
+  protected readonly isProductsPageActive = isActive('/products', this.router, {
+    paths: 'subset',
+    queryParams: 'ignored',
+    fragment: 'ignored',
+    matrixParams: 'ignored',
+  });
 
   constructor() {
     afterEveryRender({

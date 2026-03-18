@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 import { ProductsGridStore } from './store/products-grid.store';
 import { MatIcon } from '@angular/material/icon';
 import { UIStore } from '../../store/ui.store';
+import { AppStore } from '../../store/app.store';
 
 @Component({
   selector: 'app-products-grid',
@@ -30,6 +31,7 @@ export class ProductsGrid {
   protected readonly search = inputRoute.required<string>();
 
   protected readonly store = inject(ProductsGridStore);
+  protected readonly appStore = inject(AppStore);
   protected readonly ui = inject(UIStore);
 
   constructor() {

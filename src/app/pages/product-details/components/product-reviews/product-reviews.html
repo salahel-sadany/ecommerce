@@ -2,17 +2,22 @@
   <div class="flex justify-between">
     <h2 class="text-xl font-semibold">Customer Reviews</h2>
 
-    <button matButton="filled">Write a review</button>
+    @if (auth.isLoggedIn()) {
+      <button (click)="isReviewFormOpen.set(true)" matButton="filled">Write a review</button>
+    }
   </div>
 
+  @if (isReviewFormOpen()) {
+    <app-review-form (reviewFormClosed)="isReviewFormOpen.set(false)" />
+  }
   <article
-    class="mat-bg-surface-container-low rounded-lg grid lg:grid-cols-2 gap-4 items-center p-4"
+    class="mat-bg-surface-container-low rounded-lg grid lg:grid-cols-2 gap-4 items-center mt-8 p-4"
   >
     <div class="flex flex-col items-center gap-4">
       <p class="text-4xl font-bold">{{ product().rating }}</p>
       <app-star-rating [rating]="product().rating" />
       <p class="mat-text-on-secondary-container text-base">
-        {{ 'Based on ' + product().reviews.length + ' reviews' }}
+        {{ 'Based on ' + reviews().length + ' reviews' }}
       </p>
     </div>
 
@@ -24,7 +29,7 @@
           <div class="flex-1 h-2 bg-gray-300 rounded-full overflow-hidden">
             <div
               class="bg-amber-300 h-full transition-all duration-300"
-              [style.width.%]="breakdown.percentage"
+              [style.width.%]="breakdown.percentage || 0"
             ></div>
           </div>
 
@@ -35,7 +40,7 @@
   </article>
 
   <div class="flex flex-col gap-8">
-    @for (review of sortedReviews(); track review.id) {
+    @for (review of reviews(); track review.id) {
       <article class="flex gap-4" appViewPanel>
         <img
           class="rounded-full h-16 aspect-square object-cover"
@@ -47,7 +52,7 @@
           <p class="text-xl font-semibold">{{ review.userName }}</p>
 
           <app-star-rating class="block" [rating]="review.rating">
-            {{ review.reviewDate | date }}
+            {{ review.reviewDate.toDate() | date }}
           </app-star-rating>
 
           <p class="text-lg font-medium">{{ review.title }}</p>
