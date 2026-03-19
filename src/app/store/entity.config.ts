@@ -3,7 +3,6 @@ import { entityConfig } from '@ngrx/signals/entities';
 import { Product } from '../models/product.model';
 import { CartItem } from '../models/cartItem.model';
 import { Order } from '../models/order.model';
-import { collection } from '@angular/fire/firestore';
 import { UserReview } from '../models/user-review.model';
 
 export const productsConfig = entityConfig({
