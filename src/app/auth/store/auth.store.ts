@@ -102,7 +102,15 @@ export const AuthStore = signalStore(
         exhaustMap(() =>
           store._authService.logout().pipe(
             tapResponse({
-              next: () => console.log('logged out'),
+              next: () => {
+                const currentUrl = store._router.url;
+
+                if (!currentUrl.startsWith('/product')) {
+                  store._router.navigate(['/products/all'], {
+                    skipLocationChange: true,
+                  });
+                }
+              },
               error: (err: AuthError) => {
                 updateState(store, 'Error set', setError(err));
                 store._toast.error('Logout failed: ' + err.code.split('/')[1].replaceAll('-', ' '));

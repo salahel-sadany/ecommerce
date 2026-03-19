@@ -56,7 +56,7 @@
     <button matIconButton [matMenuTriggerFor]="userMenu">
       <img
         class="rounded-full aspect-square object-cover object-center"
-        [src]="user.imageUrl"
+        [src]="user.imageUrl || 'user.png'"
         [alt]="user.name"
       />
     </button>

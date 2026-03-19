@@ -41,7 +41,7 @@ export class ReviewsService {
       userId: user.id,
       productId: reviewData.productId,
       userName: user.name,
-      userImageUrl: user.imageUrl,
+      userImageUrl: user.imageUrl || 'user.png',
       rating: reviewData.rating,
       title: reviewData.title,
       comment: reviewData.comment,

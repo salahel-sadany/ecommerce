@@ -45,7 +45,7 @@ import { AuthStore } from '../auth/store/auth.store';
 import { Router } from '@angular/router';
 import { Order, PlaceOrderInput } from '../models/order.model';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { EMPTY, exhaustMap, filter, pipe, switchMap, take, tap } from 'rxjs';
+import { EMPTY, exhaustMap, filter, of, pipe, switchMap, take, tap, throttleTime } from 'rxjs';
 import { ProductsService } from '../services/products-service';
 import { tapResponse } from '@ngrx/operators';
 import { WishlistService } from '../services/wishlist-service';
@@ -155,7 +155,7 @@ export const AppStore = signalStore(
   withEntities(reviewsConfig),
   withCallState({ collections: ['products', 'cart', 'wishlist', 'orders'] }),
   withComputed((store) => ({
-    vm: computed(() => createAppVm(store.wishlistEntities(), store.cartItemsEntities())),
+    vm: computed(() => createAppVm(store.wishlistIds(), store.cartItemsIds())),
   })),
   withMethods((store) => ({
     loadProducts: rxMethod<void>(
@@ -190,7 +190,18 @@ export const AppStore = signalStore(
         switchMap(() => {
           const userId = store._auth.userId();
 
-          if (!userId) return EMPTY;
+          if (!userId) {
+            return of([]).pipe(
+              tap(() =>
+                updateState(
+                  store,
+                  'Logout: Force Clear Wishlist',
+                  setAllEntities([] as Product[], wishlistConfig),
+                  setLoaded('wishlist'),
+                ),
+              ),
+            );
+          }
 
           return store._wishlistService.getWishlist(userId).pipe(
             tapResponse({
@@ -221,7 +232,18 @@ export const AppStore = signalStore(
         switchMap(() => {
           const userId = store._auth.userId();
 
-          if (!userId) return EMPTY;
+          if (!userId) {
+            return of([]).pipe(
+              tap(() =>
+                updateState(
+                  store,
+                  'Cart Loaded',
+                  setAllEntities([] as CartItem[], cartConfig),
+                  setLoaded('cart'),
+                ),
+              ),
+            );
+          }
 
           return store._cartService.getCartItems(userId).pipe(
             tapResponse({
@@ -246,7 +268,18 @@ export const AppStore = signalStore(
         switchMap(() => {
           const userId = store._auth.userId();
 
-          if (!userId) return EMPTY;
+          if (!userId) {
+            return of([]).pipe(
+              tap(() =>
+                updateState(
+                  store,
+                  'Orders Loaded',
+                  setAllEntities([] as Order[], ordersConfig),
+                  setLoaded('orders'),
+                ),
+              ),
+            );
+          }
 
           return store._ordersService.getOrders(userId).pipe(
             tapResponse({
@@ -452,16 +485,11 @@ export const AppStore = signalStore(
       store.loadProducts();
       store.loadReviews();
 
-      toObservable(store._auth.user)
-        .pipe(
-          filter((user) => !!user),
-          take(1),
-        )
-        .subscribe((user) => {
-          store.loadWishlist();
-          store.loadCartItems();
-          store.loadOrders();
-        });
+      toObservable(store._auth.user).subscribe(() => {
+        store.loadWishlist();
+        store.loadCartItems();
+        store.loadOrders();
+      });
     },
   })),
   withDevtools('app-store'),

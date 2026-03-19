@@ -62,7 +62,12 @@
       <mat-icon>{{ store.isInWishlist(product()) ? 'favorite' : 'favorite_border' }}</mat-icon>
     </button>
 
-    <button matIconButton class="rounded-xl aspect-square p-0 min-w-14" aria-label="Share">
+    <button
+      (click)="shareProduct()"
+      matIconButton
+      class="rounded-xl aspect-square p-0 min-w-14"
+      aria-label="Share"
+    >
       <mat-icon>share</mat-icon>
     </button>
   </div>

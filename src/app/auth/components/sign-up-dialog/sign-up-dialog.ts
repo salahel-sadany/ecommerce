@@ -68,6 +68,7 @@ export class SignUpDialog {
       name,
       email,
       password,
+      imageUrl: 'user.png',
       checkout: this.dialogData?.checkout,
       dialogId: this.dialogRef.id,
     } as UserSignUp);
