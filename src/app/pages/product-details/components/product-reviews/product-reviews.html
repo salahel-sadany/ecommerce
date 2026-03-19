@@ -1,63 +1,84 @@
 <article appViewPanel class="space-y-8">
-  <div class="flex justify-between">
-    <h2 class="text-xl font-semibold">Customer Reviews</h2>
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <h2 class="text-xl md:text-2xl font-bold">Customer Reviews</h2>
 
     @if (auth.isLoggedIn()) {
-      <button (click)="isReviewFormOpen.set(true)" matButton="filled">Write a review</button>
+      <button (click)="isReviewFormOpen.set(true)" matButton="filled" class="w-full sm:w-auto">
+        Write a review
+      </button>
     }
   </div>
 
   @if (isReviewFormOpen()) {
     <app-review-form [productId]="product().id" (reviewFormClosed)="isReviewFormOpen.set(false)" />
   }
+
   <article
-    class="mat-bg-surface-container-low rounded-lg grid lg:grid-cols-2 gap-4 items-center mt-8 p-4"
+    class="mat-bg-surface-container-low rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-8 p-6 md:p-8"
   >
-    <div class="flex flex-col items-center gap-4">
-      <p class="text-4xl font-bold">{{ avgRating() | number: '1.0-1' }}</p>
-      <app-star-rating [rating]="avgRating()" />
-      <p class="mat-text-on-secondary-container text-base">
-        {{ 'Based on ' + reviews().length + ' reviews' }}
+    <div
+      class="flex flex-col items-center gap-2 border-b md:border-b-0 md:border-r border-outline-variant/20 pb-6 md:pb-0"
+    >
+      <p class="text-5xl font-black text-primary">{{ avgRating() | number: '1.0-1' }}</p>
+      <app-star-rating [rating]="avgRating()" class="scale-110" />
+      <p class="mat-text-on-secondary-container text-sm font-medium mt-1">
+        Based on {{ reviews().length }} reviews
       </p>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-3">
       @for (breakdown of ratingBreakdown(); track breakdown.stars) {
-        <div class="flex items-center gap-6">
-          <div class="flex items-center gap-2">{{ breakdown.stars }} <mat-icon>star</mat-icon></div>
+        <div class="flex items-center gap-3 md:gap-4">
+          <div class="flex items-center gap-1 min-w-11.25 text-sm font-bold">
+            {{ breakdown.stars }} <mat-icon class="scale-75">star</mat-icon>
+          </div>
 
-          <div class="flex-1 h-2 bg-gray-300 rounded-full overflow-hidden">
+          <div class="flex-1 h-2.5 bg-outline-variant/20 rounded-full overflow-hidden bg-gray-300">
             <div
-              class="bg-amber-300 h-full transition-all duration-300"
+              class="bg-amber-300 h-full rounded-full transition-all duration-500 ease-out"
               [style.width.%]="breakdown.percentage || 0"
             ></div>
           </div>
 
-          <p>{{ breakdown.count }}</p>
+          <p class="min-w-7.5 text-right text-xs font-semibold">{{ breakdown.count }}</p>
         </div>
       }
     </div>
   </article>
 
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-6">
     @for (review of reviews(); track review.id) {
-      <article class="flex gap-4" appViewPanel>
-        <img
-          class="rounded-full h-16 aspect-square object-cover"
-          [src]="review.userImageUrl"
-          [alt]="review.userName"
-        />
+      <article
+        class="flex flex-col sm:flex-row gap-4 p-4 md:p-6 rounded-xl border border-outline-variant/10"
+        appViewPanel
+      >
+        <div class="flex items-center sm:items-start gap-4">
+          <img
+            class="rounded-full h-12 w-12 md:h-16 md:w-16 aspect-square object-cover shadow-sm"
+            [src]="review.userImageUrl"
+            [alt]="review.userName"
+          />
+          <div class="sm:hidden">
+            <p class="text-lg font-bold">{{ review.userName }}</p>
+            <p class="text-xs opacity-60">{{ review.reviewDate.toDate() | date }}</p>
+          </div>
+        </div>
 
-        <div class="py-1 space-y-3">
-          <p class="text-xl font-semibold">{{ review.userName }}</p>
+        <div class="flex-1 space-y-2">
+          <div class="hidden sm:flex justify-between items-baseline">
+            <p class="text-lg font-bold">{{ review.userName }}</p>
+            <p class="text-xs mat-text-on-secondary-container">
+              {{ review.reviewDate.toDate() | date }}
+            </p>
+          </div>
 
-          <app-star-rating class="block" [rating]="review.rating">
-            {{ review.reviewDate.toDate() | date }}
-          </app-star-rating>
+          <app-star-rating class="block mb-2" [rating]="review.rating" />
 
-          <p class="text-lg font-medium">{{ review.title }}</p>
+          <p class="text-base md:text-lg font-bold leading-tight">{{ review.title }}</p>
 
-          <p class="text-base mat-text-on-secondary-container">{{ review.comment }}</p>
+          <p class="text-sm md:text-base leading-relaxed mat-text-on-secondary-container italic">
+            "{{ review.comment }}"
+          </p>
         </div>
       </article>
     }

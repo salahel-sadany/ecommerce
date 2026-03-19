@@ -1,64 +1,88 @@
-<div class="text-xs rounded-xl mat-bg-surface-container-high px-2 py-1 mb-2 w-fit">
+<div
+  class="inline-flex items-center text-xs md:text-sm font-medium rounded-full mat-bg-surface-container-high px-3 py-1 mb-3"
+>
   {{ product().category | titlecase }}
 </div>
 
-<h1 class="text-2xl font-extrabold mb-5">{{ product().name }}</h1>
+<h1 class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight">
+  {{ product().name }}
+</h1>
 
-<app-star-rating [rating]="avgRating()"
-  >{{ `${(avgRating() | number: '1.0-1')} (${product().reviewCount} reviews)` }}
-</app-star-rating>
+<div class="flex items-center gap-2 mb-4">
+  <app-star-rating [rating]="avgRating()">
+    <span class="text-sm mat-text-on-secondary-container">
+      {{ avgRating() | number: '1.0-1' }} ({{ product().reviewCount }} reviews)
+    </span>
+  </app-star-rating>
+</div>
 
-<p class="text-3xl font-extrabold my-5">{{ product().price | currency }}</p>
+<p class="text-3xl md:text-4xl font-extrabold my-6 text-primary">
+  {{ product().price | currency }}
+</p>
 
 <app-stock-status [inStock]="product().inStock" />
 
-<p class="font-semibold mb-2 mt-3">Description</p>
-<p class="mat-text-on-secondary-container mb-4">{{ product().description }}</p>
-
-<mat-divider />
-
-<div class="flex items-center gap-2 mb-3 mt-4">
-  <span class="font-semibold">Quantity:</span>
-  <app-qty-selector [quantity]="quantity()" (quantityUpdated)="quantity.set($event)" />
+<div class="space-y-2 my-6">
+  <p class="font-bold text-sm uppercase tracking-wider opacity-70">Description</p>
+  <p class="mat-text-on-secondary-container leading-relaxed text-sm md:text-base">
+    {{ product().description }}
+  </p>
 </div>
 
-<div class="flex gap-4 mb-4">
+<mat-divider class="opacity-10" />
+
+<div class="flex items-center gap-4 my-6">
+  <span class="font-semibold text-sm">Quantity:</span>
+  <app-qty-selector
+    class="scale-110 origin-left"
+    [quantity]="quantity()"
+    (quantityUpdated)="quantity.set($event)"
+  />
+</div>
+
+<div class="flex flex-wrap sm:flex-nowrap gap-3 mb-6">
   <button
     matButton="filled"
-    class="flex items-center gap-2 w-2/3"
+    class="flex-1 py-6 text-base font-bold rounded-xl"
     (click)="store.addToCart({ product: product(), quantity: quantity() })"
     [disabled]="!product().inStock"
   >
-    <mat-icon>shopping_cart</mat-icon>
-    <p>{{ product().inStock ? 'Add to Cart' : 'Out of Stock' }}</p>
+    <mat-icon class="mr-2">shopping_cart</mat-icon>
+    {{ product().inStock ? 'Add to Cart' : 'Out of Stock' }}
   </button>
 
-  <button
-    matIconButton
-    [class.text-red-500!]="store.isInWishlist(product())"
-    (click)="toggleWishlist()"
-  >
-    <mat-icon>{{ store.isInWishlist(product()) ? 'favorite' : 'favorite_border' }}</mat-icon>
-  </button>
+  <div class="flex gap-2">
+    <button
+      matIconButton
+      class="rounded-xl aspect-square p-0 min-w-14"
+      [class.text-red-500!]="store.isInWishlist(product())"
+      (click)="toggleWishlist()"
+      aria-label="Add to wishlist"
+    >
+      <mat-icon>{{ store.isInWishlist(product()) ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
 
-  <button matIconButton>
-    <mat-icon>share</mat-icon>
-  </button>
+    <button matIconButton class="rounded-xl aspect-square p-0 min-w-14" aria-label="Share">
+      <mat-icon>share</mat-icon>
+    </button>
+  </div>
 </div>
 
-<mat-divider />
+<mat-divider class="opacity-10" />
 
-<div class="pt-6 flex flex-col gap-2 mat-text-on-secondary-container text-xs">
+<div
+  class="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 mat-text-on-secondary-container text-xs md:text-sm"
+>
   <div class="flex items-center gap-3">
-    <mat-icon class="small">local_shipping</mat-icon>
-    <span>Free shipping on orders over $50</span>
+    <mat-icon class="text-primary scale-90">local_shipping</mat-icon>
+    <span>Free shipping over $50</span>
   </div>
   <div class="flex items-center gap-3">
-    <mat-icon class="small">autorenew</mat-icon>
+    <mat-icon class="text-primary scale-90">autorenew</mat-icon>
     <span>30-day return policy</span>
   </div>
   <div class="flex items-center gap-3">
-    <mat-icon class="small">shield</mat-icon>
+    <mat-icon class="text-primary scale-90">shield</mat-icon>
     <span>2-year warranty included</span>
   </div>
 </div>

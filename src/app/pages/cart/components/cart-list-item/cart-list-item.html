@@ -1,33 +1,50 @@
-<article class="grid grid-cols-[3fr_1fr_1fr]">
+<article class="grid grid-cols-1 md:grid-cols-[3fr_1fr_1fr] gap-4 py-4">
   <div class="flex items-center gap-4">
     <img
       [style.view-transition-name]="'product-image-' + item().productId"
       [src]="item().imageUrl"
       [alt]="item().name"
-      class="w-24 h-24 rounded-lg object-cover object-center aspect-square"
+      class="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover object-center aspect-square shrink-0"
     />
 
-    <div>
-      <p class="text-lg font-semibold">{{ item().name }}</p>
-      <p class="text-lg mat-text-on-secondary-container">{{ item().price | currency }}</p>
+    <div class="min-w-0">
+      <p class="text-base md:text-lg font-semibold truncate">{{ item().name }}</p>
+      <p class="text-sm md:text-lg mat-text-on-secondary-container">
+        {{ item().price | currency }}
+      </p>
+
+      <p class="md:hidden text-lg font-bold mt-1">{{ item().totalPrice | currency }}</p>
     </div>
   </div>
 
-  <app-qty-selector
-    [quantity]="item().quantity"
-    (quantityUpdated)="store.setCartItemQuantity({ productId: item().productId, quantity: $event })"
-  />
+  <div class="flex items-center md:justify-center">
+    <app-qty-selector
+      class="scale-90 md:scale-100 origin-left"
+      [quantity]="item().quantity"
+      (quantityUpdated)="
+        store.setCartItemQuantity({ productId: item().productId, quantity: $event })
+      "
+    />
+  </div>
 
-  <div class="flex flex-col items-end">
-    <p class="text-lg font-semibold">{{ item().totalPrice | currency }}</p>
+  <div
+    class="flex flex-row md:flex-col justify-between md:items-end items-center border-t md:border-t-0 pt-3 md:pt-0"
+    style="border-color: var(--mat-sys-outline-variant)"
+  >
+    <p class="hidden md:block text-lg font-semibold">{{ item().totalPrice | currency }}</p>
 
-    <div class="flex -me-3">
-      <button matIconButton (click)="store.addToWishlist(cartItem())">
-        <mat-icon>favorite_border</mat-icon>
+    <div class="flex -me-2">
+      <button matIconButton (click)="store.addToWishlist(item())" aria-label="Add to wishlist">
+        <mat-icon class="scale-90 md:scale-100">favorite_border</mat-icon>
       </button>
 
-      <button matIconButton class="danger" (click)="store.removeCartItem(item().productId)">
-        <mat-icon>delete</mat-icon>
+      <button
+        matIconButton
+        class="danger"
+        (click)="store.removeCartItem(item().productId)"
+        aria-label="Remove item"
+      >
+        <mat-icon class="scale-90 md:scale-100">delete</mat-icon>
       </button>
     </div>
   </div>

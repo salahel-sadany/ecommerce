@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatAnchor } from '@angular/material/button';
 import { CartStore } from '../../store/cart.store';
 import { RouterLink } from '@angular/router';
+import { MatBadge } from '@angular/material/badge';
 
 @Component({
   selector: 'app-tease-wishlist',
