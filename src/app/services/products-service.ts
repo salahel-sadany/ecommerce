@@ -1,13 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  collection,
-  collectionData,
-  doc,
-  docData,
-  Firestore,
-  getDoc,
-} from '@angular/fire/firestore';
-import { from, Observable, take, filter } from 'rxjs';
+import { collection, collectionData, doc, docData, Firestore } from '@angular/fire/firestore';
+import { Observable, take, filter } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({

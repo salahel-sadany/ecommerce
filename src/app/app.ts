@@ -1,8 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Header } from './layout/header/header';
 import { RouterOutlet } from '@angular/router';
-import { PRODUCTS_NEW } from './data/products.const';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +10,7 @@ import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 })
 export class App {
   protected readonly title = signal('ecommerce');
-  private readonly db = inject(Firestore);
+  // private readonly db = inject(Firestore);
 
   // constructor() {
   //   this.generate();

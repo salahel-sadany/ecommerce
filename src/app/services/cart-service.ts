@@ -4,32 +4,18 @@ import {
   collectionData,
   deleteDoc,
   doc,
-  docData,
   Firestore,
   getDoc,
   getDocs,
   increment,
-  serverTimestamp,
   setDoc,
-  Timestamp,
   updateDoc,
   writeBatch,
 } from '@angular/fire/firestore';
-import {
-  concatMap,
-  EMPTY,
-  filter,
-  forkJoin,
-  from,
-  mergeMap,
-  Observable,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { concatMap, EMPTY, forkJoin, from, Observable, switchMap, tap } from 'rxjs';
 import { CartItem } from '../models/cartItem.model';
 import { Product } from '../models/product.model';
 import { WishlistService } from './wishlist-service';
-import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root',

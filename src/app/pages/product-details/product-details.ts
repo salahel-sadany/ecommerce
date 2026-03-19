@@ -6,7 +6,6 @@ import { ProductReviews } from './components/product-reviews/product-reviews';
 import { MatIcon } from '@angular/material/icon';
 import { MatAnchor } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-// import { ProductReviews } from './components/product-reviews/product-reviews';
 
 @Component({
   selector: 'app-product-details',

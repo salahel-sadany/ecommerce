@@ -14,18 +14,14 @@ import {
   updateState,
   withCallState,
   withDevtools,
-  withStorageSync,
 } from '@angular-architects/ngrx-toolkit';
-import { computed, effect, inject } from '@angular/core';
+import { computed,  inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
-  addEntities,
-  addEntity,
-  removeAllEntities,
+
   removeEntity,
   setAllEntities,
-  setEntities,
-  updateEntity,
+
   withEntities,
 } from '@ngrx/signals/entities';
 import { Product } from '../models/product.model';
@@ -43,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from '../auth/components/sign-in-dialog/sign-in-dialog';
 import { AuthStore } from '../auth/store/auth.store';
 import { Router } from '@angular/router';
-import { Order, PlaceOrderInput } from '../models/order.model';
+import { Order} from '../models/order.model';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, exhaustMap, filter, of, pipe, switchMap, take, tap, throttleTime } from 'rxjs';
 import { ProductsService } from '../services/products-service';

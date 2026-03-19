@@ -10,7 +10,7 @@ import {
   setDoc,
   writeBatch,
 } from '@angular/fire/firestore';
-import { from, mergeMap, Observable, forkJoin, switchMap, EMPTY, combineLatest, of } from 'rxjs';
+import { from, Observable, switchMap, combineLatest, of } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ProductsService } from './products-service';
 
