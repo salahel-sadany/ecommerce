@@ -1,13 +1,18 @@
-<div class="flex flex-col justify-center items-center h-[60vh] overflow-clip">
+<div class="flex flex-col justify-center items-center min-h-[60vh] px-6 py-12 text-center">
   <div
-    class="w-20 h-20 mat-bg-surface-container-high rounded-full p-5 flex justify-center items-center mb-6"
+    class="w-16 h-16 md:w-20 md:h-20 mat-bg-surface-container-high rounded-full flex justify-center items-center mb-6"
   >
-    <mat-icon class="scale-150">favorite_border</mat-icon>
+    <mat-icon class="scale-125 md:scale-150 text-secondary">favorite_border</mat-icon>
   </div>
 
-  <h2 class="text-2xl font-bold mb-3">Your wishlist is empty</h2>
+  <h2 class="text-xl md:text-2xl font-bold mb-2">Your wishlist is empty</h2>
 
-  <p class="mat-text-on-secondary-container mb-6">Save items you love for later!</p>
+  <p class="max-w-62.5 md:max-w-none mat-text-on-secondary-container mb-8 text-sm md:text-base">
+    Save items you love for later!
+    <span class="block sm:inline">Explore our collection today.</span>
+  </p>
 
-  <button routerLink="/products/all" matButton="filled">Start Shopping</button>
+  <button routerLink="/products/all" matButton="filled" class="w-full sm:w-auto px-8">
+    Start Shopping
+  </button>
 </div>

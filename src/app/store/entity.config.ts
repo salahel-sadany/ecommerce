@@ -2,6 +2,9 @@ import { type } from '@ngrx/signals';
 import { entityConfig } from '@ngrx/signals/entities';
 import { Product } from '../models/product.model';
 import { CartItem } from '../models/cartItem.model';
+import { Order } from '../models/order.model';
+import { collection } from '@angular/fire/firestore';
+import { UserReview } from '../models/user-review.model';
 
 export const productsConfig = entityConfig({
   entity: type<Product>(),
@@ -18,5 +21,17 @@ export const wishlistConfig = entityConfig({
 export const cartConfig = entityConfig({
   entity: type<CartItem>(),
   collection: 'cartItems',
-  selectId: (item) => item.id,
+  selectId: (item) => item.productId,
+});
+
+export const ordersConfig = entityConfig({
+  entity: type<Order>(),
+  collection: 'orders',
+  selectId: (order) => order.id,
+});
+
+export const reviewsConfig = entityConfig({
+  entity: type<UserReview>(),
+  collection: 'reviews',
+  selectId: (rev) => rev.id,
 });

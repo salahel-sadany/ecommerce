@@ -18,6 +18,8 @@
     <mat-form-field class="mb-4">
       <input matInput type="email" placeholder="Enter your email" formControlName="email" />
       <mat-icon matPrefix>email</mat-icon>
+
+      <mat-error>Enter a valid email</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mb-6">
@@ -39,6 +41,8 @@
       >
         <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
+
+      <mat-error>Password is required</mat-error>
     </mat-form-field>
 
     <button type="submit" class="w-full" matButton="filled">Sign In</button>

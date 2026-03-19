@@ -1,16 +1,29 @@
-<article appViewPanel class="flex flex-wrap gap-3 items-center justify-between">
-  <div class="flex items-center gap-3">
-    <mat-icon class="text-red-500!">favorite_border</mat-icon>
+<article
+  appViewPanel
+  class="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between p-4 md:p-6"
+>
+  <div class="flex items-center gap-4">
+    <div class="p-3 rounded-full mat-bg-error-container/20">
+      <mat-icon class="text-red-500! scale-110 md:scale-125">favorite_border</mat-icon>
+    </div>
 
-    <div>
-      <h2 class="text-xl font-bold">Wishlist ({{ count() }} Items)</h2>
-      <p class="mat-text-on-secondary-container">You have {{ count() }} item saved for later</p>
+    <div class="min-w-0">
+      <h2 class="text-lg md:text-xl font-bold truncate">Wishlist ({{ count() }})</h2>
+      <p class="text-sm md:text-base mat-text-on-secondary-container opacity-80">
+        {{ count() }} {{ count() === 1 ? 'item' : 'items' }} saved for later
+      </p>
     </div>
   </div>
 
-  <div class="flex gap-3">
-    <button matButton routerLink="/wishlist">View All</button>
-    <button matButton="filled" (click)="store.addAllWishlistToCart()">
+  <div class="flex flex-col xs:flex-row sm:flex-row gap-3 w-full sm:w-auto">
+    <button matButton="outlined" routerLink="/wishlist" class="w-full sm:w-auto">View All</button>
+
+    <button
+      matButton="filled"
+      color="primary"
+      class="w-full sm:w-auto"
+      (click)="store.addAllWishlistToCart()"
+    >
       <mat-icon style="--mat-button-filled-icon-spacing: 8px">shopping_cart</mat-icon>
       Add All to Cart
     </button>

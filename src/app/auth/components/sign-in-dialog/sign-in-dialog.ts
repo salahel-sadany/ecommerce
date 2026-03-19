@@ -3,7 +3,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton, MatAnchor, MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatFormField, MatPrefix, MatSuffix, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { UserSignIn } from '../../../models/user.model';
 import { AuthStore } from '../../store/auth.store';
@@ -23,6 +23,7 @@ import { SignUpDialog } from '../sign-up-dialog/sign-up-dialog';
     MatAnchor,
     MatButton,
     ReactiveFormsModule,
+    MatError,
   ],
   templateUrl: './sign-in-dialog.html',
   styleUrl: './sign-in-dialog.scss',
@@ -34,15 +35,18 @@ export class SignInDialog {
   private readonly dialogData = inject<{ checkout: boolean }>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(DialogRef);
 
-  protected readonly signInForm = this.fb.group({
-    email: ['salah@test.com', [Validators.email, Validators.required]],
-    password: ['1234', Validators.required],
-  });
-
   protected readonly passwordVisible = signal(false);
 
+  protected readonly signInForm = this.fb.group({
+    email: ['', [Validators.email, Validators.required]],
+    password: ['', Validators.required],
+  });
+
   protected signIn() {
-    if (!this.signInForm.valid) return;
+    if (!this.signInForm.valid) {
+      this.signInForm.markAllAsTouched();
+      return;
+    }
 
     const { email, password } = this.signInForm.value;
 

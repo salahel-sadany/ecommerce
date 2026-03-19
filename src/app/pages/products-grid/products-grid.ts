@@ -7,6 +7,10 @@ import { RouterLink } from '@angular/router';
 import { ProductsGridStore } from './store/products-grid.store';
 import { MatIcon } from '@angular/material/icon';
 import { UIStore } from '../../store/ui.store';
+import { AppStore } from '../../store/app.store';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-products-grid',
@@ -30,7 +34,13 @@ export class ProductsGrid {
   protected readonly search = inputRoute.required<string>();
 
   protected readonly store = inject(ProductsGridStore);
+  protected readonly appStore = inject(AppStore);
   protected readonly ui = inject(UIStore);
+
+  protected readonly breakPointObserver = inject(BreakpointObserver);
+  protected readonly isMobile = toSignal(
+    this.breakPointObserver.observe('(max-width: 768px)').pipe(map((res) => res.matches)),
+  );
 
   constructor() {
     this.store.setCategory(this.category);

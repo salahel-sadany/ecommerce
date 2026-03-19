@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { AppStore } from '../../store/app.store';
 import { RouterLink } from '@angular/router';
 import { StarRating } from '../star-rating/star-rating';
+import { CartItem } from '../../models/cartItem.model';
 
 @Component({
   selector: 'app-product-card',

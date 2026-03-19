@@ -1,26 +1,34 @@
 @let vm = store.vm();
 
-<section class="p-22">
-  <div class="wrapper">
+<section class="py-18 md:py-24">
+  <div class="wrapper lg:px-24">
     <app-back-button label="Back To Products" navigateTo="/products/all" />
 
     @if (vm.product; as product) {
-      <div class="flex gap-8 mb-8 flex-wrap">
-        <img
-          [style.view-transition-name]="'product-image-' + product.id"
-          [src]="product.imageUrl"
-          [alt]="product.description"
-          class="w-125 h-137.5 object-cover object-center aspect-square rounded-lg"
-        />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 mb-12">
+        <div class="w-full max-w-2xl mx-auto">
+          <img
+            [style.view-transition-name]="'product-image-' + product.id"
+            [src]="product.imageUrl"
+            [alt]="product.description"
+            class="w-full h-auto max-h-125 md:max-h-150 object-cover object-center aspect-video lg:aspect-square rounded-2xl shadow-md"
+          />
+        </div>
 
-        <div class="flex-1">
+        <div class="flex flex-col justify-start">
           <app-product-info [product]="product" />
         </div>
       </div>
 
-      <app-product-reviews [product]="vm.product" />
+      <div class="mt-12 pt-12">
+        <app-product-reviews [product]="vm.product" />
+      </div>
     } @else {
-      <p>there is no such product</p>
+      <div class="py-20 text-center">
+        <mat-icon class="scale-150 mb-4 opacity-50">inventory_2</mat-icon>
+        <h2 class="text-2xl font-bold">Product not found</h2>
+        <button matButton="filled" routerLink="/products/all" class="mt-4">Return to Shop</button>
+      </div>
     }
   </div>
 </section>

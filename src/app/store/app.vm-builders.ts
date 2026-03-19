@@ -1,10 +1,10 @@
-import { CartItem } from '../models/cartItem.model';
-import { Product } from '../models/product.model';
+import { EntityId } from '@ngrx/signals/entities';
+
 import { AppVM } from '../view-models/app.vm';
 
-export function createAppVm(wishlist: Product[], cartItems: CartItem[]): AppVM {
+export function createAppVm(wishlistIds: EntityId[], cartItemsIds: EntityId[]): AppVM {
   return {
-    cartItemsCount: cartItems.length,
-    wishlistCount: wishlist.length,
+    cartItemsCount: cartItemsIds.length,
+    wishlistCount: wishlistIds.length,
   };
 }

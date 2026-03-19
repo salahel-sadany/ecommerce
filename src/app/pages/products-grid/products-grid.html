@@ -1,8 +1,20 @@
 @let vm = store.vm();
 
 <mat-sidenav-container class="min-h-full">
-  <mat-sidenav class="px-6 pt-22 fixed!" mode="side" [opened]="ui.isSidenavOpen()">
-    <h2 class="text-lg font-semibold mat-text-on-surface">Categories</h2>
+  <mat-sidenav
+    class="w-64 px-6 py-24"
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="ui.isSidenavOpen()"
+    (closedStart)="ui.closeSidenav()"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold mat-text-on-surface">Categories</h2>
+      @if (isMobile()) {
+        <button mat-icon-button (click)="ui.toggleSidenav()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
 
     <mat-nav-list>
       @for (cat of vm.categories; track cat) {
@@ -10,17 +22,19 @@
           class="my-2"
           [routerLink]="['/products', cat]"
           [activated]="cat === category()"
+          (click)="isMobile() && ui.toggleSidenav()"
+          [style]="{
+            '--mat-list-list-item-hover-label-text-color':
+              cat === category() ? ' var(--mat-sys-on-primary)' : null,
+
+            '--mat-list-list-item-focus-label-text-color':
+              cat === category() ? ' var(--mat-sys-on-primary)' : null,
+          }"
         >
           <span
             matListItemTitle
             class="font-medium"
             [class.mat-text-on-primary]="cat === category()"
-            [style]="{
-              '--mat-list-list-item-hover-label-text-color':
-                cat === category() ? ' var(--mat-sys-on-primary)' : null,
-              '--mat-list-list-item-focus-label-text-color':
-                cat === category() ? ' var(--mat-sys-on-primary)' : null,
-            }"
           >
             {{ cat | titlecase }}
           </span>
@@ -29,24 +43,33 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content class="px-6 pt-22 mat-bg-surface-container-low min-h-screen">
-    <h1 class="text-2xl font-bold mb-1">{{ category() | titlecase }}</h1>
-    <p class="text-base mat-text-on-secondary-container mb-6">
+  <mat-sidenav-content
+    class="px-4 md:px-8 py-22 md:py-24 mat-bg-surface-container-low min-h-screen"
+  >
+    <h1 class="text-xl md:text-3xl font-bold mb-1">{{ category() | titlecase }}</h1>
+    <p class="text-sm md:text-base mat-text-on-secondary-container mb-6">
       {{ vm.filteredProductsCount }} products found
       @if (search()) {
         <span> for "{{ search() }}"</span>
       }
     </p>
 
-    <div class="grid-auto-fill">
-      @for (product of vm.filteredProducts; track product.id) {
-        <app-product-card [product]="product">
-          <mat-icon
-            [class.text-red-500!]="store.isInWishlist(product)"
-            ngProjectAs="toggle-wishlist-icon"
-            >{{ store.isInWishlist(product) ? 'favorite' : 'favorite_border' }}</mat-icon
-          >
-        </app-product-card>
+    <div class="grid-auto-fill gap-6">
+      @if (appStore.productsLoaded()) {
+        @for (product of vm.filteredProducts; track product.id) {
+          <app-product-card [product]="product" class="w-full">
+            <mat-icon
+              [class.text-red-500!]="store.isInWishlist(product)"
+              ngProjectAs="toggle-wishlist-icon"
+            >
+              {{ store.isInWishlist(product) ? 'favorite' : 'favorite_border' }}
+            </mat-icon>
+          </app-product-card>
+        }
+      } @else {
+        @for (item of [1, 2, 3, 4]; track $index) {
+          <div class="aspect-3/4 bg-gray-200 animate-pulse rounded-xl shadow-sm"></div>
+        }
       }
     </div>
   </mat-sidenav-content>

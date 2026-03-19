@@ -5,7 +5,7 @@
     [src]="product().imageUrl"
     [alt]="product().description"
     [style.view-transition-name]="'product-image-' + product().id"
-    class="w-full h-80 object-cover object-center aspect-video rounded-t-xl"
+    class="w-full h-60 md:h-80 object-cover object-center aspect-video rounded-t-xl"
     [routerLink]="['/product', product().id]"
   />
 
@@ -19,26 +19,35 @@
   </button>
 
   <div
-    class="p-5 grid grid-rows-subgrid row-span-5 gap-4"
+    class="p-5 grid grid-rows-subgrid row-span-5 gap-2 md:gap-4"
     [style.view-transition-name]="'product-info-' + product().id"
   >
-    <h3 class="text-lg font-semibold" [routerLink]="['/product', product().id]">
+    <h3 class="text-base md:text-lg font-semibold" [routerLink]="['/product', product().id]">
       {{ product().name }}
     </h3>
 
-    <p class="text-sm leading-relaxed mat-text-on-secondary-container">
+    <p class="text-xs md:text-sm leading-relaxed mat-text-on-secondary-container">
       {{ product().description }}
     </p>
 
-    <app-star-rating [rating]="product().rating"> ({{ product().reviewCount }}) </app-star-rating>
+    <app-star-rating [rating]="product().ratingPoints / product().reviewCount">
+      ({{ product().reviewCount }})
+    </app-star-rating>
 
-    <p class="text-sm font-medium" [class]="product().inStock ? 'text-green-500' : 'text-red-500'">
+    <p
+      class="text-xs md:text-sm font-medium"
+      [class]="product().inStock ? 'text-green-500' : 'text-red-500'"
+    >
       {{ product().inStock ? 'In Stock' : 'Out of Stock' }}
     </p>
 
-    <div class="flex justify-between items-center">
-      <span class="text-2xl font-bold">{{ product().price | currency }}</span>
-      <button matButton="filled" class="flex gap-1.5" (click)="store.addToCart(product())">
+    <div class="flex flex-wrap justify-between items-center gap-2">
+      <span class="text-xl md:text-2xl font-bold">{{ product().price | currency }}</span>
+      <button
+        matButton="filled"
+        class="flex gap-1.5 max-md:text-xs"
+        (click)="store.addToCart({ product: product() })"
+      >
         <mat-icon>shopping_cart</mat-icon>
         <p>Add to Cart</p>
       </button>

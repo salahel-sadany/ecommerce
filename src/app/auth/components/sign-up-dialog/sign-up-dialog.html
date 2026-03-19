@@ -16,11 +16,15 @@
     <mat-form-field class="mb-4">
       <input matInput type="text" placeholder="Enter your name" formControlName="name" />
       <mat-icon matPrefix>person</mat-icon>
+
+      <mat-error>Name is required.</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mb-4">
       <input matInput type="email" placeholder="Enter your email" formControlName="email" />
       <mat-icon matPrefix>email</mat-icon>
+
+      <mat-error>Please enter a valid email.</mat-error>
     </mat-form-field>
 
     <mat-form-field class="mb-4">
@@ -33,9 +37,20 @@
 
       <mat-icon matPrefix>lock</mat-icon>
 
-      <button matIconButton matSuffix type="button" class="me-2">
-        <!-- <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon> -->
-      </button>
+      <!-- <button matIconButton matSuffix type="button" class="me-2">
+        <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button> -->
+      @if (
+        signUpForm.get('password')?.getError('required') ||
+        signUpForm.get('password')?.getError('minlength')
+      ) {
+        <mat-error>Password must be at least 8 characters</mat-error>
+      } @else if (signUpForm.get('password')?.getError('pattern')) {
+        <mat-error
+          >Password must include at least One uppercase letter, One lowercase letter, One number,
+          One special character (@$!%*?&)</mat-error
+        >
+      }
     </mat-form-field>
 
     <mat-form-field class="mb-6">
@@ -48,9 +63,11 @@
 
       <mat-icon matPrefix>lock</mat-icon>
 
-      <button matIconButton matSuffix type="button" class="me-2">
-        <!-- <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon> -->
-      </button>
+      <!-- <button matIconButton matSuffix type="button" class="me-2">
+        <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button> -->
+
+      <mat-error>Passwords do not match!</mat-error>
     </mat-form-field>
 
     <button type="submit" class="w-full" matButton="filled">Create Account</button>

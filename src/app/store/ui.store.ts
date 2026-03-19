@@ -17,6 +17,7 @@ export const UIStore = signalStore(
   withMethods((store) => ({
     toggleSidenav: () =>
       updateState(store, 'Sidenav toggled', (state) => ({ isSidenavOpen: !state.isSidenavOpen })),
+    closeSidenav: () => updateState(store, 'sidenav closed', { isSidenavOpen: false }),
     setSearchWord: signalMethod((word: string) =>
       updateState(store, 'Search Word update', { searchWord: word || '' }),
     ),
