@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { CartItemVM } from '../../../../view-models/cartItem.vm';
 import { CartItem } from '../../../../models/cartItem.model';
+import { AppStore } from '../../../../store/app.store';
 
 @Component({
   selector: 'app-cart-list-item',
@@ -15,6 +16,7 @@ import { CartItem } from '../../../../models/cartItem.model';
 })
 export class CartListItem {
   protected readonly store = inject(CartStore);
+  protected readonly appStore = inject(AppStore);
   readonly item = input.required<CartItemVM>();
   readonly cartItem = computed<CartItem>(() => {
     const { totalPrice, ...cartItem } = this.item();

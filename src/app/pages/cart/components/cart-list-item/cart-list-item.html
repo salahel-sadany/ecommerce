@@ -34,7 +34,11 @@
     <p class="hidden md:block text-lg font-semibold">{{ item().totalPrice | currency }}</p>
 
     <div class="flex -me-2">
-      <button matIconButton (click)="store.addToWishlist(item())" aria-label="Add to wishlist">
+      <button
+        matIconButton
+        (click)="appStore.addToWishlist(item().productId)"
+        aria-label="Add to wishlist"
+      >
         <mat-icon class="scale-90 md:scale-100">favorite_border</mat-icon>
       </button>
 

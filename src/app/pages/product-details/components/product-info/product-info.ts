@@ -1,4 +1,4 @@
-import { afterEveryRender, Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { Product } from '../../../../models/product.model';
 import { CurrencyPipe, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { StockStatus } from '../stock-status/stock-status';
@@ -52,7 +52,7 @@ export class ProductInfo {
     const isInWishlist = this.store.isInWishlist(this.product());
 
     if (isInWishlist) this.store.removeFromWishlist(this.product().id);
-    else this.store.addToWishlist(this.product());
+    else this.store.addToWishlist(this.product().id);
   }
 
   protected shareProduct() {

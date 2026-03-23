@@ -6,7 +6,6 @@ import { MatIcon } from '@angular/material/icon';
 import { AppStore } from '../../store/app.store';
 import { RouterLink } from '@angular/router';
 import { StarRating } from '../star-rating/star-rating';
-import { CartItem } from '../../models/cartItem.model';
 
 @Component({
   selector: 'app-product-card',
@@ -22,6 +21,6 @@ export class ProductCard {
     const isInWishlist = this.store.isInWishlist(this.product());
 
     if (isInWishlist) this.store.removeFromWishlist(this.product().id);
-    else this.store.addToWishlist(this.product());
+    else this.store.addToWishlist(this.product().id);
   }
 }

@@ -6,6 +6,7 @@ import { ShippingForm } from './components/shipping-form/shipping-form';
 import { PaymentForm } from './components/payment-form/payment-form';
 import { CartStore } from '../cart/store/cart.store';
 import { CurrencyPipe } from '@angular/common';
+import { AppStore } from '../../store/app.store';
 
 @Component({
   selector: 'app-checkout',
@@ -14,5 +15,5 @@ import { CurrencyPipe } from '@angular/common';
   styleUrl: './checkout.scss',
 })
 export default class Checkout {
-  protected readonly store = inject(CartStore);
+  protected readonly appStore = inject(AppStore);
 }

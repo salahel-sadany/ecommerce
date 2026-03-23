@@ -1,4 +1,4 @@
-@let vm = store.vm();
+@let vm = store.headerVm();
 
 <mat-toolbar
   #header
@@ -13,7 +13,7 @@
   <a routerLink="/">
     <img
       class="h-10 md:h-14"
-      [src]="theme.isDark() ? 'logo-white.png' : 'logo-dark.png'"
+      [src]="theme.isDark() ? 'logo-white.webp' : 'logo-dark.webp'"
       alt="Shop Sphere logo"
     />
   </a>
@@ -56,7 +56,7 @@
     <button matIconButton [matMenuTriggerFor]="userMenu">
       <img
         class="rounded-full aspect-square object-cover object-center"
-        [src]="user.imageUrl || 'user.png'"
+        [src]="user.imageUrl || 'user.webp'"
         [alt]="user.name"
       />
     </button>

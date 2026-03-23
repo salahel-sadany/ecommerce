@@ -6,8 +6,8 @@ import { MatIcon } from '@angular/material/icon';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatAnchor } from '@angular/material/button';
 import { ReviewForm } from '../review-form/review-form';
-import { AppStore } from '../../../../store/app.store';
 import { AuthStore } from '../../../../auth/store/auth.store';
+import { ReviewsStore } from '../../store/reviews.store';
 
 @Component({
   selector: 'app-product-reviews',
@@ -20,7 +20,7 @@ export class ProductReviews {
 
   protected readonly auth = inject(AuthStore);
 
-  protected readonly appStore = inject(AppStore);
+  protected readonly store = inject(ReviewsStore);
 
   readonly product = input.required<Product>();
 
@@ -29,9 +29,7 @@ export class ProductReviews {
     else return 0;
   });
 
-  protected readonly reviews = computed(() =>
-    this.appStore.reviewsEntities().filter((rev) => rev.productId === this.product().id),
-  );
+  protected readonly reviews = this.store.reviewsEntities;
 
   protected readonly ratingBreakdown = computed(() => {
     const reviews = this.reviews;

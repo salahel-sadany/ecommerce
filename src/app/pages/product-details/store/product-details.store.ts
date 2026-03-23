@@ -11,15 +11,22 @@ import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { createProductDetailsVm } from './product-details.vm-builders';
 import { AppStore } from '../../../store/app.store';
+import { ProductsGridStore } from '../../products-grid/store/products-grid.store';
+
+import { AuthStore } from '../../../auth/store/auth.store';
+import { ReviewsService } from '../../../services/reviews-service';
 
 export const ProductDetailsStore = signalStore(
   withState(initialProductDetailsSlice),
   withProps(() => ({
     _appStore: inject(AppStore),
+    _products: inject(ProductsGridStore),
+    _auth: inject(AuthStore),
+    _reviewsService: inject(ReviewsService),
   })),
   withComputed((store) => ({
     vm: computed(() =>
-      createProductDetailsVm(store._appStore.productsEntities(), store.selectedProductId()),
+      createProductDetailsVm(store._products.productsEntities(), store.selectedProductId()),
     ),
   })),
   withMethods((store) => ({

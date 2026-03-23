@@ -47,40 +47,48 @@
   </article>
 
   <div class="flex flex-col gap-6">
-    @for (review of reviews(); track review.id) {
-      <article
-        class="flex flex-col sm:flex-row gap-4 p-4 md:p-6 rounded-xl border border-outline-variant/10"
-        appViewPanel
-      >
-        <div class="flex items-center sm:items-start gap-4">
-          <img
-            class="rounded-full h-12 w-12 md:h-16 md:w-16 aspect-square object-cover shadow-sm"
-            [src]="review.userImageUrl"
-            [alt]="review.userName"
-          />
-          <div class="sm:hidden">
-            <p class="text-lg font-bold">{{ review.userName }}</p>
-            <p class="text-xs opacity-60">{{ review.reviewDate.toDate() | date }}</p>
+    @defer (on viewport) {
+      @for (review of reviews(); track review.id) {
+        <article
+          class="flex flex-col sm:flex-row gap-4 p-4 md:p-6 rounded-xl border border-outline-variant/10"
+          appViewPanel
+        >
+          <div class="flex items-center sm:items-start gap-4">
+            <img
+              class="rounded-full h-12 w-12 md:h-16 md:w-16 aspect-square object-cover shadow-sm"
+              [src]="review.userImageUrl"
+              [alt]="review.userName"
+            />
+            <div class="sm:hidden">
+              <p class="text-lg font-bold">{{ review.userName }}</p>
+              @if (review.reviewDate) {
+                <p class="text-xs opacity-60">{{ review.reviewDate.toDate() | date }}</p>
+              }
+            </div>
           </div>
-        </div>
 
-        <div class="flex-1 space-y-2">
-          <div class="hidden sm:flex justify-between items-baseline">
-            <p class="text-lg font-bold">{{ review.userName }}</p>
-            <p class="text-xs mat-text-on-secondary-container">
-              {{ review.reviewDate.toDate() | date }}
+          <div class="flex-1 space-y-2">
+            <div class="hidden sm:flex justify-between items-baseline">
+              <p class="text-lg font-bold">{{ review.userName }}</p>
+              @if (review.reviewDate) {
+                <p class="text-xs mat-text-on-secondary-container">
+                  {{ review.reviewDate.toDate() | date }}
+                </p>
+              }
+            </div>
+
+            <app-star-rating class="block mb-2" [rating]="review.rating" />
+
+            <p class="text-base md:text-lg font-bold leading-tight">{{ review.title }}</p>
+
+            <p class="text-sm md:text-base leading-relaxed mat-text-on-secondary-container italic">
+              "{{ review.comment }}"
             </p>
           </div>
-
-          <app-star-rating class="block mb-2" [rating]="review.rating" />
-
-          <p class="text-base md:text-lg font-bold leading-tight">{{ review.title }}</p>
-
-          <p class="text-sm md:text-base leading-relaxed mat-text-on-secondary-container italic">
-            "{{ review.comment }}"
-          </p>
-        </div>
-      </article>
+        </article>
+      }
+    } @placeholder {
+      <p>Product Reviews</p>
     }
   </div>
 </article>

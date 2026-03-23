@@ -1,4 +1,4 @@
-import { afterEveryRender, Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { ViewPanel } from '../../../../directives/view-panel';

@@ -2,9 +2,8 @@ import { Component, inject, input } from '@angular/core';
 import { ViewPanel } from '../../../../directives/view-panel';
 import { MatIcon } from '@angular/material/icon';
 import { MatAnchor } from '@angular/material/button';
-import { CartStore } from '../../store/cart.store';
 import { RouterLink } from '@angular/router';
-import { MatBadge } from '@angular/material/badge';
+import { AppStore } from '../../../../store/app.store';
 
 @Component({
   selector: 'app-tease-wishlist',
@@ -13,6 +12,6 @@ import { MatBadge } from '@angular/material/badge';
   styleUrl: './tease-wishlist.scss',
 })
 export class TeaseWishlist {
-  protected readonly store = inject(CartStore);
+  protected readonly appStore = inject(AppStore);
   readonly count = input.required<number>();
 }

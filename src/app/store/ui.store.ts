@@ -4,11 +4,13 @@ import { signalMethod, signalStore, withMethods, withState } from '@ngrx/signals
 export interface UISlice {
   readonly isSidenavOpen: boolean;
   readonly searchWord: string;
+  readonly selectedCategory: string;
 }
 
 export const initialUISlice: UISlice = {
   isSidenavOpen: false,
   searchWord: '',
+  selectedCategory: 'all',
 };
 
 export const UIStore = signalStore(
@@ -20,6 +22,9 @@ export const UIStore = signalStore(
     closeSidenav: () => updateState(store, 'sidenav closed', { isSidenavOpen: false }),
     setSearchWord: signalMethod((word: string) =>
       updateState(store, 'Search Word update', { searchWord: word || '' }),
+    ),
+    setCategory: signalMethod((category: string) =>
+      updateState(store, 'Category Update', { selectedCategory: category.toLowerCase() }),
     ),
   })),
 
