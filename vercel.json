@@ -1,6 +1,10 @@
 {
   "version": 2,
-  "public": true,
+  "functions": {
+    "server/server.mjs": {
+      "runtime": "vercel-node@latest"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
