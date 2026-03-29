@@ -1,13 +1,17 @@
 <article
   class="mat-bg-surface rounded-xl overflow-hidden shadow-lg cursor-pointer grid grid-rows-subgrid row-span-6 gap-0 relative transition-translate duration-200 ease-out hover:-translate-y-1"
 >
-  <img
-    [src]="product().imageUrl"
-    [alt]="product().description"
-    [style.view-transition-name]="'product-image-' + product().id"
-    class="w-full h-60 md:h-80 object-cover object-center aspect-video rounded-t-xl"
-    [routerLink]="['/product', product().id]"
-  />
+  <div class="relative w-full h-60 md:h-80">
+    <img
+      [ngSrc]="product().imageUrl"
+      [alt]="product().description"
+      [style.view-transition-name]="'product-image-' + product().id"
+      class="object-cover object-center rounded-t-xl"
+      [routerLink]="['/product', product().id]"
+      fill
+      [priority]="index() < 5"
+    />
+  </div>
 
   <button
     matIconButton

@@ -1,7 +1,3 @@
-export interface ProductsGridSlice {
-  readonly selectedCategory: string;
-}
+export interface ProductsGridSlice {}
 
-export const initialProductsGridSlice: ProductsGridSlice = {
-  selectedCategory: 'all',
-};
+export const initialProductsGridSlice: ProductsGridSlice = {};

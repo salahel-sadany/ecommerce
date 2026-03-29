@@ -24,10 +24,10 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../services/auth-service';
 import { AuthAdapter } from '../adapters/auth.adpter';
-import { concatMap, exhaustMap, pipe, switchMap, tap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, tap } from 'rxjs';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthError } from '@angular/fire/auth';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },

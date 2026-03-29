@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ViewPanel } from '../../../../directives/view-panel';
 import { CartStore } from '../../store/cart.store';
 import { CartListItem } from '../cart-list-item/cart-list-item';
+import { AppStore } from '../../../../store/app.store';
 
 @Component({
   selector: 'app-cart-items-list',
@@ -10,5 +11,6 @@ import { CartListItem } from '../cart-list-item/cart-list-item';
   styleUrl: './cart-items-list.scss',
 })
 export class CartItemsList {
+  protected readonly appStore = inject(AppStore);
   protected readonly store = inject(CartStore);
 }

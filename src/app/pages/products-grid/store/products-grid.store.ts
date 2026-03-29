@@ -1,41 +1,73 @@
 import { computed, inject } from '@angular/core';
 import {
-  signalMethod,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
 import { createProductsGridVm } from './products-grid.vm-builders';
-import { AppStore } from '../../../store/app.store';
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import {
+  setError,
+  setLoaded,
+  setLoading,
+  updateState,
+  withCallState,
+  withDevtools,
+} from '@angular-architects/ngrx-toolkit';
 import { initialProductsGridSlice } from './product-grid.slice';
 import { UIStore } from '../../../store/ui.store';
+import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { productsConfig } from '../../../store/entity.config';
+import { tapResponse } from '@ngrx/operators';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, tap, switchMap } from 'rxjs';
+import { ProductsService } from '../../../services/products-service';
 
 export const ProductsGridStore = signalStore(
+  { providedIn: 'root' },
   withState(initialProductsGridSlice),
-  withProps((store) => {
-    const _appStore = inject(AppStore);
-    const _products = _appStore.productsEntities;
-    const _ui = inject(UIStore);
-
-    return {
-      _appStore,
-      _products,
-      _ui,
-    };
-  }),
+  withEntities(productsConfig),
+  withCallState(),
+  withProps(() => ({
+    _productsService: inject(ProductsService),
+    _ui: inject(UIStore),
+  })),
   withComputed((store) => ({
     vm: computed(() =>
-      createProductsGridVm(store._products(), store.selectedCategory(), store._ui.searchWord()),
+      createProductsGridVm(
+        store.productsEntities(),
+        store._ui.selectedCategory(),
+        store._ui.searchWord(),
+      ),
     ),
   })),
   withMethods((store) => ({
-    setCategory: signalMethod((category: string) =>
-      updateState(store, 'Category Update', { selectedCategory: category.toLowerCase() }),
+    loadProducts: rxMethod<void>(
+      pipe(
+        tap(() => updateState(store, 'Products loading set', setLoading())),
+        switchMap(() =>
+          store._productsService.getProducts().pipe(
+            tapResponse({
+              next: (products) =>
+                updateState(
+                  store,
+                  'Products Loaded',
+                  setAllEntities(products, productsConfig),
+                  setLoaded(),
+                ),
+              error: (err) =>
+                updateState(store, 'Error loading products', setError(err), setLoaded()),
+              finalize: () => updateState(store, 'cleanup products', setLoaded()),
+            }),
+          ),
+        ),
+      ),
     ),
-    isInWishlist: store._appStore.isInWishlist,
+  })),
+  withHooks((store) => ({
+    onInit: () => store.loadProducts(),
   })),
   withDevtools('products-grid-store'),
 );

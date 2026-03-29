@@ -81,10 +81,10 @@ export class CartService {
     );
   }
 
-  addCartItemToWishlist(uid: string, product: Product): Observable<void> {
+  addCartItemToWishlist(uid: string, cartItem: CartItem): Observable<void> {
     return this.wishlistService
-      .addToWishlist(uid, product.id)
-      .pipe(concatMap((_) => this.removeCartItem(uid, product.id)));
+      .addToWishlist(uid, cartItem.productId)
+      .pipe(concatMap((_) => this.removeCartItem(uid, cartItem.productId)));
   }
 
   setCartItemQuantity(uid: string, productId: string, quantity: number) {

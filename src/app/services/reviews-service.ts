@@ -9,6 +9,7 @@ import {
   query,
   serverTimestamp,
   Timestamp,
+  where,
   writeBatch,
 } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
@@ -21,9 +22,13 @@ import { from, Observable } from 'rxjs';
 export class ReviewsService {
   private readonly db = inject(Firestore);
 
-  getReviews(): Observable<UserReview[]> {
+  getReviews(productId: string): Observable<UserReview[]> {
     const collectionRef = collection(this.db, 'reviews');
-    const q = query(collectionRef, orderBy('reviewDate', 'desc'));
+    const q = query(
+      collectionRef,
+      where('productId', '==', productId),
+      orderBy('reviewDate', 'desc'),
+    );
 
     return collectionData(q, { idField: 'id' }) as Observable<UserReview[]>;
   }
@@ -41,7 +46,7 @@ export class ReviewsService {
       userId: user.id,
       productId: reviewData.productId,
       userName: user.name,
-      userImageUrl: user.imageUrl || 'user.png',
+      userImageUrl: user.imageUrl || 'user.webp',
       rating: reviewData.rating,
       title: reviewData.title,
       comment: reviewData.comment,

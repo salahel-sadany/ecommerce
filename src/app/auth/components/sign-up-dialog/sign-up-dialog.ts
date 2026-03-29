@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconButton, MatAnchor, MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogClose } from '@angular/material/dialog';
-import { MatError, MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatPrefix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { UserSignUp } from '../../../models/user.model';
@@ -68,7 +68,7 @@ export class SignUpDialog {
       name,
       email,
       password,
-      imageUrl: 'user.png',
+      imageUrl: 'user.webp',
       checkout: this.dialogData?.checkout,
       dialogId: this.dialogRef.id,
     } as UserSignUp);

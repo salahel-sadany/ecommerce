@@ -5,6 +5,7 @@ import { TeaseWishlist } from './components/tease-wishlist/tease-wishlist';
 import { CartStore } from './store/cart.store';
 import { OrderSummary } from '../../components/order-summary/order-summary';
 import { MatAnchor } from '@angular/material/button';
+import { AppStore } from '../../store/app.store';
 
 @Component({
   selector: 'app-cart',
@@ -13,5 +14,6 @@ import { MatAnchor } from '@angular/material/button';
   styleUrl: './cart.scss',
 })
 export default class Cart {
+  protected readonly appStore = inject(AppStore);
   protected readonly store = inject(CartStore);
 }

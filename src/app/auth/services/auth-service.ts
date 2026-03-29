@@ -7,21 +7,10 @@ import {
   signOut,
   updateProfile,
   User as FirebaseUser,
-  UserCredential,
 } from '@angular/fire/auth';
-import {
-  addDoc,
-  collection,
-  doc,
-  DocumentData,
-  DocumentReference,
-  Firestore,
-  getDoc,
-  setDoc,
-} from '@angular/fire/firestore';
+import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { forkJoin, from, map, Observable, switchMap } from 'rxjs';
 import { User } from '../../models/user.model';
-import { AuthAdapter } from '../adapters/auth.adpter';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +25,7 @@ export class AuthService {
         const newUser = {
           email,
           id: user.uid,
-          imageUrl: imageUrl || 'user.png',
+          imageUrl: imageUrl || 'user.webp',
           name,
         };
 

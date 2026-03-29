@@ -15,6 +15,7 @@ import { SignUpDialog } from '../../auth/components/sign-up-dialog/sign-up-dialo
 import { SignInDialog } from '../../auth/components/sign-in-dialog/sign-in-dialog';
 import { UIStore } from '../../store/ui.store';
 import { ThemeService } from '../../services/theme-service';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -32,14 +33,12 @@ import { ThemeService } from '../../services/theme-service';
     MatMenuTrigger,
     MatDivider,
     MatMenuItem,
+    NgOptimizedImage,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
-  private headerEl = viewChild.required('header', { read: ElementRef });
-  protected readonly headerHeight = signal(0);
-
   private readonly router = inject(Router);
 
   protected readonly dialog = inject(MatDialog);
@@ -56,12 +55,6 @@ export class Header {
     fragment: 'ignored',
     matrixParams: 'ignored',
   });
-
-  constructor() {
-    afterEveryRender({
-      read: () => this.headerHeight.set(this.headerEl().nativeElement.offsetHeight),
-    });
-  }
 
   onSearch(event: Event) {
     const searchEl = event.target as HTMLInputElement;

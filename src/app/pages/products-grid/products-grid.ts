@@ -11,6 +11,7 @@ import { AppStore } from '../../store/app.store';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-products-grid',
@@ -29,7 +30,7 @@ import { map } from 'rxjs';
   templateUrl: './products-grid.html',
   styleUrl: './products-grid.scss',
 })
-export class ProductsGrid {
+export default class ProductsGrid {
   protected readonly category = inputRoute.required<string>();
   protected readonly search = inputRoute.required<string>();
 
@@ -43,8 +44,12 @@ export class ProductsGrid {
   );
 
   constructor() {
-    this.store.setCategory(this.category);
+    this.ui.setCategory(this.category);
 
     this.ui.setSearchWord(this.search);
+  }
+
+  protected isInWishlist(product: Product) {
+    return this.appStore.isInWishlist(product);
   }
 }

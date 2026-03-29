@@ -1,11 +1,11 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatInput } from '@angular/material/input';
 import { ViewPanel } from '../../../../directives/view-panel';
 import { MatAnchor } from '@angular/material/button';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AppStore } from '../../../../store/app.store';
+import { ReviewsStore } from '../../store/reviews.store';
 
 @Component({
   selector: 'app-review-form',
@@ -48,8 +48,7 @@ export class ReviewForm {
 
   readonly productId = input.required<string>();
 
-  private readonly appStore = inject(AppStore);
-
+  private readonly store = inject(ReviewsStore);
   protected readonly fb = inject(NonNullableFormBuilder);
 
   reviewForm = this.fb.group({
@@ -64,7 +63,7 @@ export class ReviewForm {
       return;
     }
 
-    this.appStore.addReview({
+    this.store.addReview({
       ...this.reviewForm.getRawValue(),
       productId: this.productId(),
     });

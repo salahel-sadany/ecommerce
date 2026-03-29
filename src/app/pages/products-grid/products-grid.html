@@ -55,14 +55,14 @@
     </p>
 
     <div class="grid-auto-fill gap-6">
-      @if (appStore.productsLoaded()) {
+      @if (store.loaded()) {
         @for (product of vm.filteredProducts; track product.id) {
-          <app-product-card [product]="product" class="w-full">
+          <app-product-card [product]="product" [index]="$index" class="w-full">
             <mat-icon
-              [class.text-red-500!]="store.isInWishlist(product)"
+              [class.text-red-500!]="isInWishlist(product)"
               ngProjectAs="toggle-wishlist-icon"
             >
-              {{ store.isInWishlist(product) ? 'favorite' : 'favorite_border' }}
+              {{ isInWishlist(product) ? 'favorite' : 'favorite_border' }}
             </mat-icon>
           </app-product-card>
         }
