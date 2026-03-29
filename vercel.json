@@ -1,9 +1,13 @@
 {
-  "version": 2,
-  "rewrites": [
+  "functions": {
+    "server/server.mjs": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/server/server.mjs"
+      "src": "/(.*)",
+      "dest": "server/server.mjs"
     }
   ]
 }
