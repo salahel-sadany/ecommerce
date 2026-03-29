@@ -1,9 +1,11 @@
 {
-  "functions": {
-    "server/server.mjs": {
-      "runtime": "nodejs20.x"
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/server.mjs",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/(.*)",
