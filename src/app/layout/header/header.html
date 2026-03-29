@@ -10,11 +10,12 @@
     </button>
   }
 
-  <a routerLink="/">
+  <a routerLink="/" class="block relative w-auto h-10 md:h-14 aspect-3/1">
     <img
-      class="h-10 md:h-14"
-      [src]="theme.isDark() ? 'logo-white.webp' : 'logo-dark.webp'"
+      [ngSrc]="theme.isDark() ? 'logo-white.webp' : 'logo-dark.webp'"
       alt="Shop Sphere logo"
+      fill
+      priority
     />
   </a>
 
