@@ -1,15 +1,16 @@
 {
   "version": 2,
-  "builds": [
+  "public": true,
+  "name": "ecommerce",
+  "rewrites": [
     {
-      "src": "server/server.mjs",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/api/index"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server/server.mjs"
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/ecommerce/**"
     }
-  ]
+  }
 }
